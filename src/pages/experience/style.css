@@ -558,15 +558,40 @@ body {
         padding: 6px 12px;
     }
 
+    #brain-navigation-container {
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 20px);
+        max-width: calc(100vw - 20px);
+    }
+
     #brain-navigation {
-        padding: 10px 20px;
-        gap: 20px;
+        padding: 8px 12px;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    #brain-navigation::-webkit-scrollbar {
+        display: none;
     }
 
     #brain-navigation a {
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 1px;
-        padding: 6px 12px;
+        padding: 8px 12px;
+        flex-shrink: 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .experience-container {
@@ -588,6 +613,32 @@ body {
 
     .timeline::before {
         left: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    #brain-navigation-container {
+        width: calc(100% - 16px);
+        max-width: calc(100vw - 16px);
+    }
+
+    #brain-navigation {
+        padding: 6px 8px;
+        gap: 6px;
+    }
+
+    #brain-navigation a {
+        font-size: 9px;
+        padding: 6px 10px;
+    }
+    
+    .experience-container {
+        padding: 80px 12px 25px 12px;
+    }
+    
+    .timeline-icon {
+        width: 50px;
+        height: 50px;
     }
 }
 

@@ -14,15 +14,32 @@ if (!THREE.BufferGeometry.prototype.setAttribute && THREE.BufferGeometry.prototy
 
 class ParticleSystem {
     constructor(mainBrain, brainParticles, memories) {
+        // Validate inputs before proceeding
+        if (!brainParticles || !brainParticles.attributes || !brainParticles.attributes.position) {
+            console.error('ParticleSystem: Invalid brainParticles provided', brainParticles);
+            throw new Error('Cannot create ParticleSystem: brainParticles is invalid or not loaded');
+        }
+        
+        if (!brainParticles.attributes.position.array || brainParticles.attributes.position.array.length === 0) {
+            console.error('ParticleSystem: brainParticles position array is empty');
+            throw new Error('Cannot create ParticleSystem: no particle positions found');
+        }
+        
         this.chuncks = new Chuncks();
         this.brainParticles = brainParticles;
         this.memories = memories;
         this.mainBrain = mainBrain;
         this.particlesStartColor = new THREE.Color(0xffffff);
         this.particlesColor = new THREE.Color(0xffffff);
-        const { xRayEffect, systemPoints } = this.init();
-        this.particles = systemPoints;
-        this.xRay = xRayEffect;
+        
+        try {
+            const { xRayEffect, systemPoints } = this.init();
+            this.particles = systemPoints;
+            this.xRay = xRayEffect;
+        } catch (error) {
+            console.error('ParticleSystem: Error during initialization', error);
+            throw error;
+        }
     }
 
     static getLoadingPoints() {
@@ -35,8 +52,22 @@ class ParticleSystem {
         const maxPointDelay = 0.3;
 
         const brainPoints = this.brainParticles.attributes.position.array;
+        
+        // Additional safety check
+        if (!brainPoints || brainPoints.length === 0) {
+            console.error('ParticleSystem.init: No brain points available');
+            throw new Error('Cannot initialize particle system: brain points array is empty');
+        }
 
         const count = brainPoints.length / 3;
+        
+        if (count === 0) {
+            console.error('ParticleSystem.init: Particle count is zero');
+            throw new Error('Cannot initialize particle system: no particles to create');
+        }
+        
+        console.log(`ParticleSystem: Initializing with ${count} particles`);
+        
         const me = this;
 
         const geometry = new BAS.PointBufferGeometry(count);
@@ -44,15 +75,21 @@ class ParticleSystem {
         const loadingCircle = ParticleSystem.getLoadingPoints();
         geometry.createAttribute('aStartLoading', 3, (data, index, num) => {
             const startVec3 = new THREE.Vector3();
-            if (loadingCircle.length < brainPoints.length) {
-                startVec3.x = loadingCircle[(index * 3) + 0] || 0.0;
-                startVec3.y = loadingCircle[(index * 3) + 1] || 0.0;
-                startVec3.z = THREE.Math.randFloat(-80.0, 1500.0); // loadingCircle[index * 3 + 2] || 0
-            } else {
-                startVec3.x = 100.0;
-                startVec3.y = 100.0;
-                startVec3.z = THREE.Math.randFloat(-80.0, 1500.0); // loadingCircle[index * 3 + 2] || 0
-            }
+            
+            // Use modulo to cycle through loadingCircle points if we have more brain points
+            const circleIndex = index % (loadingCircle.length / 3);
+            const actualIndex = circleIndex * 3;
+            
+            // Get position from loading circle, with proper fallback
+            startVec3.x = loadingCircle[actualIndex + 0] || 0.0;
+            startVec3.y = loadingCircle[actualIndex + 1] || 0.0;
+            startVec3.z = THREE.Math.randFloat(-80.0, 1500.0);
+            
+            // Add some randomization to avoid all particles starting at exact same positions
+            const randomOffset = 5.0;
+            startVec3.x += THREE.Math.randFloat(-randomOffset, randomOffset);
+            startVec3.y += THREE.Math.randFloat(-randomOffset, randomOffset);
+            
             startVec3.toArray(data);
         });
 
@@ -244,62 +281,91 @@ class ParticleSystem {
 
         const systemPoints = new THREE.Points(geometry, material);
 
-        console.error('MEMORIES', this.memories);
+        console.log('ParticleSystem: Creating xRay geometry');
+        
+        // Validate endPointsCollections before using it for xRay
+        if (!this.mainBrain.endPointsCollections) {
+            console.error('ParticleSystem: endPointsCollections is missing, xRay will not be created');
+            return { xRayEffect: null, systemPoints };
+        }
+        
         // Create geometry compatible with Three.js r91
         let xRayGeometry;
-        if (THREE.Geometry && this.mainBrain.endPointsCollections) {
-            xRayGeometry = new THREE.Geometry().fromBufferGeometry(this.mainBrain.endPointsCollections);
-        } else {
-            // Fallback for newer Three.js versions or if endPointsCollections is undefined
-            xRayGeometry = this.mainBrain.endPointsCollections || new THREE.BufferGeometry();
+        try {
+            if (THREE.Geometry && this.mainBrain.endPointsCollections) {
+                xRayGeometry = new THREE.Geometry().fromBufferGeometry(this.mainBrain.endPointsCollections);
+            } else {
+                // Fallback for newer Three.js versions
+                xRayGeometry = this.mainBrain.endPointsCollections;
+            }
+            
+            if (xRayGeometry.computeFaceNormals) {
+                xRayGeometry.computeFaceNormals();
+            }
+            if (xRayGeometry.mergeVertices) {
+                xRayGeometry.mergeVertices();
+            }
+            if (xRayGeometry.computeVertexNormals) {
+                xRayGeometry.computeVertexNormals();
+            }
+
+            const xRayEffect = new THREE.Mesh(xRayGeometry, xRayMaterial);
+            console.log('ParticleSystem: xRay geometry created successfully');
+
+            // systemPoints.visible = false;
+            // system.scale.multiplyScalar(1.05);
+            systemPoints.castShadow = true;
+            systemPoints.frustumCulled = false;
+            // systemPoints.visible = false;
+
+            // // depth material is used for directional & spot light shadows
+            // systemPoints.customDepthMaterial = BAS.Utils.createDepthAnimationMaterial(material);
+            // // distance material is used for point light shadows
+            systemPoints.customDistanceMaterial = BAS.Utils.createDistanceAnimationMaterial(material);
+
+            systemPoints.customDepthMaterial = new THREE.ShaderMaterial({
+                vertexShader: material.vertexShader,
+                fragmentShader: material.fragmentShader,
+                uniforms: material.uniforms,
+            });
+
+            return { xRayEffect, systemPoints };
+        } catch (error) {
+            console.error('ParticleSystem: Error creating xRay geometry', error);
+            // Return system points without xRay if there's an error
+            systemPoints.castShadow = true;
+            systemPoints.frustumCulled = false;
+            return { xRayEffect: null, systemPoints };
         }
-        if (xRayGeometry.computeFaceNormals) {
-            xRayGeometry.computeFaceNormals();
-        }
-        if (xRayGeometry.mergeVertices) {
-            xRayGeometry.mergeVertices();
-        }
-        if (xRayGeometry.computeVertexNormals) {
-            xRayGeometry.computeVertexNormals();
-        }
-
-        const xRayEffect = new THREE.Mesh(xRayGeometry, xRayMaterial);
-
-        // systemPoints.visible = false;
-        // system.scale.multiplyScalar(1.05);
-        systemPoints.castShadow = true;
-        systemPoints.frustumCulled = false;
-        // systemPoints.visible = false;
-
-        // // depth material is used for directional & spot light shadows
-        // systemPoints.customDepthMaterial = BAS.Utils.createDepthAnimationMaterial(material);
-        // // distance material is used for point light shadows
-        systemPoints.customDistanceMaterial = BAS.Utils.createDistanceAnimationMaterial(material);
-
-        systemPoints.customDepthMaterial = new THREE.ShaderMaterial({
-            vertexShader: material.vertexShader,
-            fragmentShader: material.fragmentShader,
-            uniforms: material.uniforms,
-        });
-
-        return { xRayEffect, systemPoints };
     }
 
 
     update(deltaTime, camera, brain) {
         this.particles.material.uniforms.uTime.value = deltaTime;
-        this.xRay.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, brain.position);
-        this.xRay.material.uniforms.uTime.value = deltaTime;
+        
+        // Safety check: only update xRay if it exists
+        if (this.xRay && this.xRay.material && this.xRay.material.uniforms) {
+            this.xRay.material.uniforms.viewVector.value = new THREE.Vector3().subVectors(camera.position, brain.position);
+            this.xRay.material.uniforms.uTime.value = deltaTime;
+        }
     }
 
     isXRayActive(status) {
+        // Safety check: only update xRay if it exists
+        if (!this.xRay || !this.xRay.material || !this.xRay.material.uniforms) {
+            console.warn('ParticleSystem: Cannot toggle xRay, it was not created');
+            return;
+        }
+        
         if (status) {
             const progress = { p: 0.0 };
             TweenMax.fromTo(progress, 3.0, { p: 3.0 }, {
                 p: 5.0,
                 ease: Power1.easeIn,
                 onUpdate: () => {
-                    this.xRay.material.uniforms.offsetY.value = Math.sin(progress.p);
+                    if (this.xRay && this.xRay.material && this.xRay.material.uniforms) {
+                        this.xRay.material.uniforms.offsetY.value = Math.sin(progress.p);
+                    }
                 },
                 onComplete: () => {
                 },
@@ -310,7 +376,9 @@ class ParticleSystem {
                 p: 3.0,
                 ease: Power1.easeIn,
                 onUpdate: () => {
-                    this.xRay.material.uniforms.offsetY.value = Math.sin(progress.p);
+                    if (this.xRay && this.xRay.material && this.xRay.material.uniforms) {
+                        this.xRay.material.uniforms.offsetY.value = Math.sin(progress.p);
+                    }
                 },
             });
         }

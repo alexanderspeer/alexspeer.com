@@ -60,36 +60,10 @@ class MainBrain extends AbstractApplication {
 
     // Check if we should skip the animation (coming from another page)
     const urlParams = new URLSearchParams(window.location.search);
-    const shouldSkip = urlParams.get('skip') === 'true';
-
-    // Wait for assets to load before starting animation
-    setTimeout(() => {
-      if (shouldSkip) {
-        // Initialize exactly as if starting intro (same as pressing Escape)
-        this.isStartupAnimationPlaying = true;
-        this.orbitControls.autoRotate = true;
-
-        // Start particle transformation immediately
-        if (this.particlesSystem) {
-          this.particlesSystem.transform(true);
-        }
-
-        // Initialize arrays for cleanup (needed by skipStartupAnimation)
-        this.startupTweens = [];
-        this.startupTimeouts = [];
-
-        // Now skip using the exact same function as Escape key
-        this.skipStartupAnimation();
-
-        // Clean up the URL parameter without reloading
-        if (window.history.replaceState) {
-          const cleanUrl = window.location.pathname;
-          window.history.replaceState({}, document.title, cleanUrl);
-        }
-      } else {
-        this.startIntro();
-      }
-    }, 1000); // 500 prev.
+    this.shouldSkipIntro = urlParams.get('skip') === 'true';
+    
+    // Don't use setTimeout - let asset loading control when we start
+    // The animation will start in runAnimation() after assets are loaded
   }
 
   addFloor() {
@@ -172,7 +146,11 @@ class MainBrain extends AbstractApplication {
 
     // Phase 1: Start zoomed INTO the brain, then zoom out while rotating
     // CAMERA START POSITION: Lower = more zoomed in, Higher = less zoomed in
-    const progress = { p: 50 }; // Start position (was 30, now 50 for less zoom-in)
+    // Apply viewport scaling to maintain consistent appearance across screen sizes
+    const startDistance = 50 * this.viewportScale; // Start position - scaled
+    const endDistance = 320 * this.viewportScale; // Final position - scaled
+    
+    const progress = { p: startDistance };
 
     // Enable auto-rotation immediately
     this.orbitControls.autoRotate = true;
@@ -198,7 +176,7 @@ class MainBrain extends AbstractApplication {
       6.0, // Zoom duration - reduced from 8.0 to 6.0 seconds for faster intro
       {
         // CAMERA END POSITION: Lower = less zoomed out (larger brain), Higher = more zoomed out (smaller brain)
-        p: 320, // Final position (was 380, now 320 for larger brain)
+        p: endDistance, // Final position - scaled based on viewport
         ease: Power1.easeInOut, // Smoother easing (Power1 instead of Power2) for less aggressive curve
         onUpdate: () => {
           this.camera.position.z = progress.p;
@@ -330,8 +308,24 @@ class MainBrain extends AbstractApplication {
   runAnimation() {
     // GUI removed for cleaner interface
     // this.gui = new GUI(this);
+    
+    // Step 1: Load brain geometry FIRST
     this.addBrain();
+    
+    // Step 2: Verify brain geometry is loaded before creating particle system
+    if (!this.endPointsCollections) {
+      console.error('Brain geometry not loaded! Retrying...');
+      // Retry after a short delay if geometry isn't ready
+      setTimeout(() => {
+        this.runAnimation();
+      }, 100);
+      return;
+    }
+    
+    // Step 3: Now safely create particle system with loaded geometry
     this.addParticlesSystem();
+    
+    // Step 4: Initialize other systems
     this.font = new Font(this.loaders, this.scene);
     this.bubblesAnimation = new BubblesAnimation(this);
     this.bubblesAnimation.initAnimation();
@@ -348,7 +342,38 @@ class MainBrain extends AbstractApplication {
     // Create bottom navigation bar with social icons
     this.createBottomNavigationBar();
 
+    // Step 5: Start animation AFTER everything is initialized
     this.animate();
+    
+    // Step 6: Now that everything is loaded, start the intro animation or skip it
+    // Use a small delay to ensure rendering has started
+    setTimeout(() => {
+      if (this.shouldSkipIntro) {
+        // Initialize exactly as if starting intro (same as pressing Escape)
+        this.isStartupAnimationPlaying = true;
+        this.orbitControls.autoRotate = true;
+
+        // Start particle transformation immediately
+        if (this.particlesSystem) {
+          this.particlesSystem.transform(true);
+        }
+
+        // Initialize arrays for cleanup (needed by skipStartupAnimation)
+        this.startupTweens = [];
+        this.startupTimeouts = [];
+
+        // Now skip using the exact same function as Escape key
+        this.skipStartupAnimation();
+
+        // Clean up the URL parameter without reloading
+        if (window.history.replaceState) {
+          const cleanUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+        }
+      } else {
+        this.startIntro();
+      }
+    }, 100);
   }
 
   animate(timestamp) {
@@ -452,7 +477,11 @@ class MainBrain extends AbstractApplication {
 
     // Set camera to exact final position - matching what natural animation produces
     // These values are what the camera ends up at after the full animation with autoRotate
-    this.camera.position.set(-345.54846209313865, 2.1963802482216168e-14, 96.22454769567089);
+    // Scale the position based on viewport to maintain consistent appearance
+    const scaledX = -345.54846209313865 * this.viewportScale;
+    const scaledY = 2.1963802482216168e-14 * this.viewportScale;
+    const scaledZ = 96.22454769567089 * this.viewportScale;
+    this.camera.position.set(scaledX, scaledY, scaledZ);
     this.camera.lookAt(this.brainCenter);
     this.orbitControls.target.copy(this.brainCenter);
     this.orbitControls.autoRotate = true;
@@ -647,16 +676,32 @@ class MainBrain extends AbstractApplication {
     newWindow.document.close();
   }
   addParticlesSystem() {
-    this.particlesSystem = new ParticleSystem(
-      this,
-      this.endPointsCollections,
-      this.memories
-    );
-    this.scene.add(this.particlesSystem.particles);
-
-    // Make xRay invisible - it may be creating a glowing orb
-    if (this.particlesSystem.xRay) {
-      this.particlesSystem.xRay.visible = false;
+    // Safety check: Ensure brain geometry is loaded
+    if (!this.endPointsCollections || !this.endPointsCollections.attributes || !this.endPointsCollections.attributes.position) {
+      console.error('Cannot create particle system: brain geometry not properly loaded');
+      return;
+    }
+    
+    try {
+      this.particlesSystem = new ParticleSystem(
+        this,
+        this.endPointsCollections,
+        this.memories
+      );
+      
+      // Verify particle system was created successfully
+      if (this.particlesSystem && this.particlesSystem.particles) {
+        this.scene.add(this.particlesSystem.particles);
+        
+        // Make xRay invisible - it may be creating a glowing orb
+        if (this.particlesSystem.xRay) {
+          this.particlesSystem.xRay.visible = false;
+        }
+      } else {
+        console.error('Particle system created but particles are missing');
+      }
+    } catch (error) {
+      console.error('Error creating particle system:', error);
     }
   }
 
@@ -1160,7 +1205,7 @@ class MainBrain extends AbstractApplication {
 
     // Store default camera position for reset (will be set after startup animation)
     this.defaultCameraPosition = null;
-    this.defaultCameraDistance = 320;
+    this.defaultCameraDistance = 320 * this.viewportScale;
 
     // Create the container for the entire control panel
     const panelContainer = document.createElement('div');
@@ -1553,7 +1598,8 @@ class MainBrain extends AbstractApplication {
     const zoomSlider = document.querySelector('#control-panel input[type="range"]');
     if (zoomSlider) {
       // Make range symmetric around the actual default distance
-      const range = 300; // 300 units in each direction
+      // Scale the range based on viewport to maintain consistent zoom behavior
+      const range = 300 * this.viewportScale; // 300 units in each direction - scaled
       zoomSlider.min = this.defaultCameraDistance - range;
       zoomSlider.max = this.defaultCameraDistance + range;
       zoomSlider.value = this.defaultCameraDistance;
@@ -1584,8 +1630,8 @@ class MainBrain extends AbstractApplication {
     if (this.defaultCameraPosition) {
       this.camera.position.copy(this.defaultCameraPosition);
     } else {
-      // Fallback if default wasn't captured
-      this.camera.position.set(0, 0, 320);
+      // Fallback if default wasn't captured - scale based on viewport
+      this.camera.position.set(0, 0, 320 * this.viewportScale);
     }
 
     // Reset control states
@@ -1609,7 +1655,7 @@ class MainBrain extends AbstractApplication {
     // Reset zoom slider
     const zoomSlider = document.querySelector('#control-panel input[type="range"]');
     if (zoomSlider) {
-      zoomSlider.value = this.defaultCameraDistance || 320;
+      zoomSlider.value = this.defaultCameraDistance || (320 * this.viewportScale);
     }
 
     // Ensure camera is looking at brain center and update orbit controls

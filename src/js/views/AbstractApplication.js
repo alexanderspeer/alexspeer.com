@@ -12,13 +12,24 @@ import {
 
 class AbstractApplication {
   constructor() {
+    // Reference resolution: The designer's screen (2560x1440)
+    this.referenceWidth = 2560;
+    this.referenceHeight = 1440;
+
+    // Calculate viewport scale factor based on diagonal
+    // This maintains the desired appearance across different screen sizes
+    this.calculateViewportScale();
+
+    // Initialize CSS custom property for UI scaling
+    document.documentElement.style.setProperty('--ui-scale', this.uiScale.toFixed(4));
+
     this.a_camera = new THREE.PerspectiveCamera(
       50,
       window.innerWidth / window.innerHeight,
       1,
       1000
     );
-    this.a_camera.position.z = 30; // Start zoomed INTO the brain
+    this.a_camera.position.z = 30 * this.viewportScale; // Start zoomed INTO the brain - scaled
 
     this.a_scene = new THREE.Scene();
     this.a_scene.background = new THREE.Color("#000000"); // Black background
@@ -91,8 +102,9 @@ class AbstractApplication {
     this.orbitControls.enableZoom = true;
     this.orbitControls.zoomSpeed = 0.1;
     this.orbitControls.panSpeed = 0.1;
-    this.orbitControls.minDistance = 50;
-    this.orbitControls.maxDistance = 2500;
+    // Scale min/max distances based on viewport to maintain consistent zoom behavior
+    this.orbitControls.minDistance = 50 * this.viewportScale;
+    this.orbitControls.maxDistance = 2500 * this.viewportScale;
     this.orbitControls.autoRotate = false;
     this.orbitControls.autoRotateSpeed = 1.0;
     this.orbitControls.rotateSpeed = 0.1;
@@ -132,12 +144,56 @@ class AbstractApplication {
     return stats;
   }
 
+  calculateViewportScale() {
+    // Calculate diagonal of reference resolution
+    const referenceDiagonal = Math.sqrt(
+      this.referenceWidth * this.referenceWidth +
+      this.referenceHeight * this.referenceHeight
+    );
+
+    // Calculate diagonal of current viewport
+    const currentDiagonal = Math.sqrt(
+      window.innerWidth * window.innerWidth +
+      window.innerHeight * window.innerHeight
+    );
+
+    // Scale factor: how much smaller/larger is the current screen vs reference
+    // This ensures brain appears the same relative size across all screens
+    this.viewportScale = currentDiagonal / referenceDiagonal;
+
+    // Also store a simpler width-based scale for UI elements
+    this.uiScale = window.innerWidth / this.referenceWidth;
+    console.log(`Viewport Scale: ${this.viewportScale.toFixed(3)}, UI Scale: ${this.uiScale.toFixed(3)}`);
+  }
+
   static onMouseMove(e) {}
   onWindowResize() {
+    // Recalculate scale on resize
+    const oldScale = this.viewportScale;
+    this.calculateViewportScale();
+
+    // If scale changed significantly, update orbit controls distances
+    if (Math.abs(oldScale - this.viewportScale) > 0.01) {
+      this.orbitControls.minDistance = 50 * this.viewportScale;
+      this.orbitControls.maxDistance = 2500 * this.viewportScale;
+
+      // Adjust current camera distance proportionally
+      const currentDistance = this.a_camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
+      const scaleFactor = this.viewportScale / oldScale;
+      const newDistance = currentDistance * scaleFactor;
+
+      // Maintain camera direction but adjust distance
+      const direction = new THREE.Vector3();
+      direction.copy(this.a_camera.position).normalize();
+      this.a_camera.position.copy(direction.multiplyScalar(newDistance));
+    }
+
     this.a_camera.aspect = window.innerWidth / window.innerHeight;
     this.a_camera.updateProjectionMatrix();
 
     this.a_renderer.setSize(window.innerWidth, window.innerHeight);
+    // Update navigation bar scale via CSS custom property
+    document.documentElement.style.setProperty('--ui-scale', this.uiScale.toFixed(4));
   }
 
   animate(timestamp) {
