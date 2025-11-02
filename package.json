@@ -12,9 +12,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --host 0.0.0.0 --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
+    "start": "node server.js",
     "lint": "eslint --ext .js src --fix",
     "build": "node build/build.js",
+    "heroku-postbuild": "npm run build",
     "dist": "build/webpack.prod.conf.js",
     "test": "jest",
     "test:clean": "rimraf ./coverage",
@@ -81,7 +82,9 @@
   },
   "dependencies": {
     "@superguigui/wagner": "^0.1.6",
+    "compression": "^1.7.4",
     "dat-gui": "^0.5.0",
+    "express": "^4.18.2",
     "findup": "^0.1.5",
     "glsl-checker": "^1.0.1",
     "glsl-noise": "0.0.0",
@@ -118,7 +121,7 @@
     ]
   },
   "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+    "node": "18.x",
+    "npm": "9.x"
   }
 }
