@@ -29,7 +29,10 @@ class AbstractApplication {
       1,
       1000
     );
-    this.a_camera.position.z = 30 * this.viewportScale; // Start zoomed INTO the brain - scaled
+    // For mobile devices, increase the initial camera distance to prevent brain from appearing too large
+    const isMobile = window.innerWidth <= 768;
+    const mobileMultiplier = isMobile ? 1.8 : 1.0;
+    this.a_camera.position.z = 30 * this.viewportScale * mobileMultiplier; // Start zoomed INTO the brain - scaled
 
     this.a_scene = new THREE.Scene();
     this.a_scene.background = new THREE.Color("#000000"); // Black background

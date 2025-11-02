@@ -482,6 +482,26 @@ body {
     opacity: 1;
 }
 
+/* Live link - more blue styling for clickable live site links */
+.project-link.live-link-active {
+    background: rgba(80, 150, 220, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.project-link.live-link-active img {
+    opacity: 1 !important;
+}
+
+.project-link.live-link-active:hover {
+    background: rgba(100, 170, 240, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+.project-link.live-link-active:hover img {
+    opacity: 1;
+}
+
 /* Gallery Modal */
 .gallery-modal {
     display: none;
@@ -603,56 +623,62 @@ body {
 
 @media (max-width: 640px) {
     #home-button-container {
-        top: 10px;
-        right: auto;
-        left: 10px;
-        margin-right: 0;
+        top: 10px !important;
+        right: auto !important;
+        left: 10px !important;
+        margin-right: 0 !important;
     }
 
     #home-button {
-        padding: 10px 20px;
-        gap: 20px;
+        padding: 8px 12px !important;
+        gap: 8px !important;
     }
-    
+
     #home-button span {
-        font-size: 12px;
-        padding: 6px 12px;
+        font-size: 10px !important;
+        letter-spacing: 1px !important;
+        padding: 8px 12px !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     #brain-navigation-container {
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(100% - 20px);
-        max-width: calc(100vw - 20px);
+        top: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 130px) !important;
+        max-width: calc(100vw - 130px) !important;
+        margin-left: 0 !important;
     }
 
     #brain-navigation {
-        padding: 8px 12px;
-        gap: 8px;
-        width: 100%;
-        box-sizing: border-box;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        justify-content: flex-start;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        justify-content: flex-start !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
     }
 
     #brain-navigation::-webkit-scrollbar {
-        display: none;
+        display: none !important;
     }
 
     #brain-navigation a {
-        font-size: 10px;
-        letter-spacing: 1px;
-        padding: 8px 12px;
-        flex-shrink: 0;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        font-size: 10px !important;
+        letter-spacing: 1px !important;
+        padding: 8px 12px !important;
+        flex-shrink: 0 !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .page-container {
@@ -679,21 +705,31 @@ body {
 }
 
 @media (max-width: 480px) {
+    #home-button {
+        padding: 6px 8px !important;
+        gap: 6px !important;
+    }
+
+    #home-button span {
+        font-size: 9px !important;
+        padding: 6px 10px !important;
+    }
+
     #brain-navigation-container {
-        width: calc(100% - 16px);
-        max-width: calc(100vw - 16px);
+        width: calc(100% - 110px) !important;
+        max-width: calc(100vw - 110px) !important;
     }
 
     #brain-navigation {
-        padding: 6px 8px;
-        gap: 6px;
+        padding: 6px 8px !important;
+        gap: 6px !important;
     }
 
     #brain-navigation a {
-        font-size: 9px;
-        padding: 6px 10px;
+        font-size: 9px !important;
+        padding: 6px 10px !important;
     }
-    
+
     .page-container {
         padding: 80px 12px 25px 12px;
     }

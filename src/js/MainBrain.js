@@ -147,8 +147,11 @@ class MainBrain extends AbstractApplication {
     // Phase 1: Start zoomed INTO the brain, then zoom out while rotating
     // CAMERA START POSITION: Lower = more zoomed in, Higher = less zoomed in
     // Apply viewport scaling to maintain consistent appearance across screen sizes
-    const startDistance = 50 * this.viewportScale; // Start position - scaled
-    const endDistance = 320 * this.viewportScale; // Final position - scaled
+    // Apply mobile multiplier to prevent brain from appearing too large on mobile
+    const isMobile = window.innerWidth <= 768;
+    const mobileMultiplier = isMobile ? 1.8 : 1.0;
+    const startDistance = 50 * this.viewportScale * mobileMultiplier; // Start position - scaled
+    const endDistance = 320 * this.viewportScale * mobileMultiplier; // Final position - scaled
 
     const progress = { p: startDistance };
 
@@ -478,9 +481,12 @@ class MainBrain extends AbstractApplication {
     // Set camera to exact final position - matching what natural animation produces
     // These values are what the camera ends up at after the full animation with autoRotate
     // Scale the position based on viewport to maintain consistent appearance
-    const scaledX = -345.54846209313865 * this.viewportScale;
-    const scaledY = 2.1963802482216168e-14 * this.viewportScale;
-    const scaledZ = 96.22454769567089 * this.viewportScale;
+    // Apply mobile multiplier to prevent brain from appearing too large on mobile
+    const isMobile = window.innerWidth <= 768;
+    const mobileMultiplier = isMobile ? 1.8 : 1.0;
+    const scaledX = -345.54846209313865 * this.viewportScale * mobileMultiplier;
+    const scaledY = 2.1963802482216168e-14 * this.viewportScale * mobileMultiplier;
+    const scaledZ = 96.22454769567089 * this.viewportScale * mobileMultiplier;
     this.camera.position.set(scaledX, scaledY, scaledZ);
     this.camera.lookAt(this.brainCenter);
     this.orbitControls.target.copy(this.brainCenter);
@@ -1196,16 +1202,20 @@ class MainBrain extends AbstractApplication {
 
   createLiquidGlassControlPanel() {
     // Initialize control states
+    // Apply mobile multiplier to prevent brain from appearing too large on mobile
+    const isMobile = window.innerWidth <= 768;
+    const mobileMultiplier = isMobile ? 1.8 : 1.0;
+
     this.controlStates = {
       thinking: false,
       brainstorm: false,
-      zoom: 320, // Default camera distance
+      zoom: 320 * mobileMultiplier, // Default camera distance
       isPanelOpen: false
     };
 
     // Store default camera position for reset (will be set after startup animation)
     this.defaultCameraPosition = null;
-    this.defaultCameraDistance = 320 * this.viewportScale;
+    this.defaultCameraDistance = 320 * this.viewportScale * mobileMultiplier;
 
     // Create the container for the entire control panel
     const panelContainer = document.createElement('div');
@@ -1599,7 +1609,10 @@ class MainBrain extends AbstractApplication {
     if (zoomSlider) {
       // Make range symmetric around the actual default distance
       // Scale the range based on viewport to maintain consistent zoom behavior
-      const range = 300 * this.viewportScale; // 300 units in each direction - scaled
+      // Apply mobile multiplier to prevent brain from appearing too large on mobile
+      const isMobile = window.innerWidth <= 768;
+      const mobileMultiplier = isMobile ? 1.8 : 1.0;
+      const range = 300 * this.viewportScale * mobileMultiplier; // 300 units in each direction - scaled
       zoomSlider.min = this.defaultCameraDistance - range;
       zoomSlider.max = this.defaultCameraDistance + range;
       zoomSlider.value = this.defaultCameraDistance;
@@ -1610,6 +1623,10 @@ class MainBrain extends AbstractApplication {
   }
 
   resetBrainState() {
+    // Apply mobile multiplier to prevent brain from appearing too large on mobile
+    const isMobile = window.innerWidth <= 768;
+    const mobileMultiplier = isMobile ? 1.8 : 1.0;
+
     // Reset all toggles to off
     if (this.controlStates.thinking && this.thinkingAnimation) {
       this.thinkingAnimation.isActive(false);
@@ -1631,14 +1648,14 @@ class MainBrain extends AbstractApplication {
       this.camera.position.copy(this.defaultCameraPosition);
     } else {
       // Fallback if default wasn't captured - scale based on viewport
-      this.camera.position.set(0, 0, 320 * this.viewportScale);
+      this.camera.position.set(0, 0, 320 * this.viewportScale * mobileMultiplier);
     }
 
     // Reset control states
     this.controlStates = {
       thinking: false,
       brainstorm: false,
-      zoom: this.defaultCameraDistance || 320,
+      zoom: this.defaultCameraDistance || (320 * mobileMultiplier),
       isPanelOpen: this.controlStates.isPanelOpen // Keep panel state
     };
 
@@ -1655,7 +1672,7 @@ class MainBrain extends AbstractApplication {
     // Reset zoom slider
     const zoomSlider = document.querySelector('#control-panel input[type="range"]');
     if (zoomSlider) {
-      zoomSlider.value = this.defaultCameraDistance || (320 * this.viewportScale);
+      zoomSlider.value = this.defaultCameraDistance || (320 * this.viewportScale * mobileMultiplier);
     }
 
     // Ensure camera is looking at brain center and update orbit controls

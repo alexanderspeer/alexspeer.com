@@ -5,7 +5,8 @@ const PROJECTS_CONFIG = [
         folder: 'calliope',
         jsonFile: 'calliope.json',
         hasVideo: true,
-        order: 1
+        order: 1,
+        liveLink: 'https://calliope-ccdc166d3d1e.herokuapp.com/static/index.html'
     },
     {
         folder: 'clio',
@@ -29,7 +30,8 @@ const PROJECTS_CONFIG = [
         folder: 'facemash',
         jsonFile: 'columbia-facemash.json',
         hasVideo: false,
-        order: 5
+        order: 5,
+        liveLink: 'https://columbia-facemash-46dd96c179aa.herokuapp.com/login'
     }
 ];
 
@@ -82,6 +84,7 @@ async function loadProjects() {
                     folder: config.folder,
                     hasVideo: config.hasVideo,
                     order: config.order,
+                    liveLink: config.liveLink,
                     stackArray: parseStack(project.stack)
                 };
             }
@@ -285,6 +288,15 @@ function renderProjects() {
             return `<span class="stack-tag" style="background: ${colors.bg}; border-color: ${colors.border}; color: ${colors.color}">${tech}</span>`;
         }).join('');
         
+        // Create live link HTML - make it active and vibrant if available
+        const liveLinkHtml = project.liveLink
+            ? `<a href="${project.liveLink}" target="_blank" rel="noopener noreferrer" class="project-link active live-link-active" title="Visit Live Site">
+                <img src="../../favicons/link.png" alt="Link">
+               </a>`
+            : `<div class="project-link" title="Live Site (Coming Soon)">
+                <img src="../../favicons/link.png" alt="Link">
+               </div>`;
+
         card.innerHTML = `
             ${mediaHtml}
             <div class="project-content">
@@ -300,9 +312,7 @@ function renderProjects() {
                         <div class="project-link" title="YouTube (Coming Soon)">
                             <img src="../../favicons/youtube.png" alt="YouTube">
                         </div>
-                        <div class="project-link" title="Live Site (Coming Soon)">
-                            <img src="../../favicons/link.png" alt="Link">
-                        </div>
+                        ${liveLinkHtml}
                     </div>
                     <div class="project-stack">
                         ${stackHtml}
