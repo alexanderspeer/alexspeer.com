@@ -2,35 +2,42 @@
 // Projects configuration
 const PROJECTS_CONFIG = [
     {
+        folder: '3dbrain',
+        jsonFile: '3dbrain.json',
+        hasVideo: true,
+        order: 1,
+        liveLink: 'https://alexspeer.com'
+    },
+    {
         folder: 'calliope',
         jsonFile: 'calliope.json',
         hasVideo: true,
-        order: 1,
+        order: 2,
         liveLink: 'https://calliope-ccdc166d3d1e.herokuapp.com/static/index.html'
     },
     {
         folder: 'clio',
         jsonFile: 'clio.json',
         hasVideo: false,
-        order: 2
+        order: 3
     },
     {
         folder: 'euterpe',
         jsonFile: 'euterpe.json',
         hasVideo: true,
-        order: 3
+        order: 4
     },
     {
         folder: 'alarm-clock',
         jsonFile: 'alarm-clock.json',
         hasVideo: true,
-        order: 4
+        order: 5
     },
     {
         folder: 'facemash',
         jsonFile: 'columbia-facemash.json',
         hasVideo: false,
-        order: 5,
+        order: 6,
         liveLink: 'https://columbia-facemash-46dd96c179aa.herokuapp.com/login'
     }
 ];
@@ -60,7 +67,10 @@ const techColors = {
     'Embedded Systems': { bg: 'rgba(100, 70, 140, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'Automation': { bg: 'rgba(60, 110, 70, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'Algorithms': { bg: 'rgba(150, 90, 150, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
-    'Neuroscience': { bg: 'rgba(180, 60, 110, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
+    'Neuroscience': { bg: 'rgba(180, 60, 110, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'Three.js': { bg: 'rgba(50, 50, 50, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'Webpack': { bg: 'rgba(140, 180, 220, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'Firebase Hosting': { bg: 'rgba(255, 160, 50, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
 };
 
 // Default color for unknown tech
@@ -122,6 +132,7 @@ function formatDescription(description, blankLineNotes) {
 function getGalleryImages(folder) {
     // Predefined gallery images for each project (specific numbers)
     const galleryImages = {
+        '3dbrain': [1, 2, 3, 4, 5],
         'alarm-clock': [1, 2, 3],
         'calliope': [1, 2, 3, 4, 5, 7, 8, 9, 10], // Note: 6 is missing
         'clio': [1, 2, 3, 4],
