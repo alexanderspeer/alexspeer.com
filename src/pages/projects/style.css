@@ -280,15 +280,17 @@ body {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     cursor: pointer;
     z-index: 20;
     transition: all 0.3s ease;
     opacity: 0;
     user-select: none;
     pointer-events: auto;
+    line-height: 1;
+    box-sizing: border-box;
+    padding: 0 0 4px 0;
 }
 
 .project-media-container:hover .gallery-arrow {
@@ -530,12 +532,13 @@ body {
     height: 60px;
     border-radius: 50%;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     transition: all 0.3s ease;
     line-height: 1;
     user-select: none;
+    box-sizing: border-box;
+    padding: 0 0 6px 0;
 }
 
 .gallery-nav:hover {

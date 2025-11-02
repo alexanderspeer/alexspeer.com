@@ -61,7 +61,7 @@ class MainBrain extends AbstractApplication {
     // Check if we should skip the animation (coming from another page)
     const urlParams = new URLSearchParams(window.location.search);
     this.shouldSkipIntro = urlParams.get('skip') === 'true';
-    
+
     // Don't use setTimeout - let asset loading control when we start
     // The animation will start in runAnimation() after assets are loaded
   }
@@ -149,7 +149,7 @@ class MainBrain extends AbstractApplication {
     // Apply viewport scaling to maintain consistent appearance across screen sizes
     const startDistance = 50 * this.viewportScale; // Start position - scaled
     const endDistance = 320 * this.viewportScale; // Final position - scaled
-    
+
     const progress = { p: startDistance };
 
     // Enable auto-rotation immediately
@@ -308,10 +308,10 @@ class MainBrain extends AbstractApplication {
   runAnimation() {
     // GUI removed for cleaner interface
     // this.gui = new GUI(this);
-    
+
     // Step 1: Load brain geometry FIRST
     this.addBrain();
-    
+
     // Step 2: Verify brain geometry is loaded before creating particle system
     if (!this.endPointsCollections) {
       console.error('Brain geometry not loaded! Retrying...');
@@ -321,10 +321,10 @@ class MainBrain extends AbstractApplication {
       }, 100);
       return;
     }
-    
+
     // Step 3: Now safely create particle system with loaded geometry
     this.addParticlesSystem();
-    
+
     // Step 4: Initialize other systems
     this.font = new Font(this.loaders, this.scene);
     this.bubblesAnimation = new BubblesAnimation(this);
@@ -344,7 +344,7 @@ class MainBrain extends AbstractApplication {
 
     // Step 5: Start animation AFTER everything is initialized
     this.animate();
-    
+
     // Step 6: Now that everything is loaded, start the intro animation or skip it
     // Use a small delay to ensure rendering has started
     setTimeout(() => {
@@ -681,18 +681,18 @@ class MainBrain extends AbstractApplication {
       console.error('Cannot create particle system: brain geometry not properly loaded');
       return;
     }
-    
+
     try {
       this.particlesSystem = new ParticleSystem(
         this,
         this.endPointsCollections,
         this.memories
       );
-      
+
       // Verify particle system was created successfully
       if (this.particlesSystem && this.particlesSystem.particles) {
         this.scene.add(this.particlesSystem.particles);
-        
+
         // Make xRay invisible - it may be creating a glowing orb
         if (this.particlesSystem.xRay) {
           this.particlesSystem.xRay.visible = false;
