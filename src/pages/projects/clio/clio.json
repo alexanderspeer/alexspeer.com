@@ -1,0 +1,12 @@
+{
+    "projects": [
+      {
+        "title": "Clio",
+        "summary": "Named after the Greek Muse of History, Clio is my personal productivity manager, and it was also the first project I built to organize and oversee all my subsequent work. It functions as a desktop-integrated hub combining clipboard history, version control, and folder management, streamlining workflow while preserving a record of every iteration and idea.",
+        "description": "Clio is a full-stack productivity suite built with a Flask REST API, a vanilla-JS frontend, and desktop companions for OS-level clipboard and hotkey integration. The backend runs on SQLite locally and automatically migrates to PostgreSQL when deployed, providing endpoints for clipboard logging, file versioning, and folder snapshots.\n\nThe Clipboard History module tracks all copy actions performed on the system, categorizing text, code, URLs, and other content types while ensuring all data stays local. It introduces enhanced clipboard slots (F5/F7 and F6/F8) for multi-item copy and paste workflows, giving users the ability to store and recall several pieces of content simultaneously.\n\nThe Version Control system allows users to save, comment, and organize document revisions, tracking every edit with timestamps and file hashes. Projects can be grouped for organization, and AI-powered diffs visualize changes between versions for quick comparison and recovery.\n\nThe Folder Manager captures full snapshots of directories using the File System Access API, preserving structure and contents for future restoration. Users can browse saved versions interactively, download individual files, or export complete folders as ZIP or JSON packages for offline storage.\n\nDeployment is handled through Heroku and Render, with Gunicorn-based production serving and automated setup scripts that start both backend and desktop agents together.",
+        "stack": "Python · Flask · JavaScript · Node.js · HTML/CSS · SQL · Heroku · AI",
+        "blank_line_notes": "Insert blank lines between each major paragraph and between each feature section (Clipboard History, Version Control, Folder Manager, Deployment) for readability on the website."
+      }
+    ]
+  }
+  

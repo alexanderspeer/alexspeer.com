@@ -25,6 +25,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
+        { from: /^\/experience\.html$/, to: '/experience.html' },
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
       ],
     },
@@ -57,11 +58,71 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+    new HtmlWebpackPlugin({
+      filename: 'experience.html',
+      template: 'src/pages/experience/index.html',
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'projects.html',
+      template: 'src/pages/projects/index.html',
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'about.html',
+      template: 'src/pages/about-me/index.html',
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'contact.html',
+      template: 'src/pages/contact/index.html',
+      inject: false
+    }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
         to: config.dev.assetsSubDirectory,
+        ignore: ['.*']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/experience'),
+        to: 'pages/experience',
+        ignore: ['index.html', 'downloads']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/experience/downloads'),
+        to: 'pages/experience/downloads',
+        ignore: ['desktop.ini']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/projects'),
+        to: 'pages/projects',
+        ignore: ['index.html']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/about-me'),
+        to: 'pages/about-me',
+        ignore: ['index.html']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/contact'),
+        to: 'pages/contact',
+        ignore: ['index.html']
+      },
+      {
+        from: path.resolve(__dirname, '../favicons'),
+        to: 'favicons',
+        ignore: ['.*']
+      },
+      {
+        from: path.resolve(__dirname, '../public/css'),
+        to: 'css',
+        ignore: ['.*']
+      },
+      {
+        from: path.resolve(__dirname, '../public/js'),
+        to: 'js',
         ignore: ['.*']
       }
     ])

@@ -74,6 +74,47 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
+    // Generate additional pages
+    new HtmlWebpackPlugin({
+      filename: 'experience.html',
+      template: 'src/pages/experience/index.html',
+      inject: false,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'projects.html',
+      template: 'src/pages/projects/index.html',
+      inject: false,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'about.html',
+      template: 'src/pages/about-me/index.html',
+      inject: false,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'contact.html',
+      template: 'src/pages/contact/index.html',
+      inject: false,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      }
+    }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
@@ -113,6 +154,36 @@ const webpackConfig = merge(baseWebpackConfig, {
       {
         from: path.resolve(__dirname, '../static'),
         to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/experience'),
+        to: 'pages/experience',
+        ignore: ['index.html', 'downloads']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/experience/downloads'),
+        to: 'pages/experience/downloads',
+        ignore: ['desktop.ini']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/projects'),
+        to: 'pages/projects',
+        ignore: ['index.html']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/about-me'),
+        to: 'pages/about-me',
+        ignore: ['index.html']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/contact'),
+        to: 'pages/contact',
+        ignore: ['index.html']
+      },
+      {
+        from: path.resolve(__dirname, '../favicons'),
+        to: 'favicons',
         ignore: ['.*']
       }
     ])

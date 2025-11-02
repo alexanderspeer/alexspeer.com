@@ -1,0 +1,12 @@
+{
+    "projects": [
+      {
+        "title": "Calliope",
+        "summary": "Named after the Greek Muse of eloquence and epic poetry, Calliope is a web app that strengthens writing and speech through tools like personalized flashcards, a word-of-the-day feed, a custom database, and intelligent completion aids that enrich existing text.",
+        "description": "Calliope is a full-stack vocabulary platform built with a FastAPI backend and a vanilla-JS single-page frontend, hosted and deployed on Heroku. The backend manages SQLAlchemy models on SQLite/PostgreSQL, integrates OpenAI completions for AI-driven enrichment, and provides REST endpoints for vocabulary management, analytics, and writing tools.\n\nCore functionality includes AI-assisted word ingestion, spell-checking, rarity and sentiment classification, and a deterministic Word of the Day system. Users can browse and edit their collection through a searchable Database, explore relationships using a Thesaurus, and interact with a suite of learning and writing utilities.\n\nFlashcards: Enables focused spaced review with keyboard shortcuts and advanced filters. Users can narrow practice to specific subsets such as recent additions, chosen rarities, sentiment categories, or parts of speech for targeted learning.\n\nSentence Prediction: Generates context-aware word suggestions drawn exclusively from your personal vocabulary, filtered by tone and part of speech.\n\nParagraph Analyzer: Scans your writing to highlight multiple words that could be improved, selecting specific terms to augment using your learned vocabulary. For each highlighted word, it offers several refined replacement suggestions drawn only from your personal database.\n\nThesaurus: Finds synonyms exclusively from your personal database, showing only words you’ve already learned to reinforce recall and strengthen internal word associations.\n\nStatistics Dashboard: Visualizes growth, streaks, rarity distribution, and sentiment patterns over time.\n\nDeployment uses a Heroku Procfile, Uvicorn server, and automated environment configuration via start_app.py, supporting one-command local or cloud setup.",
+        "stack": "JavaScript · Node.js · Python · API · SQL · Heroku · HTML/CSS · AI",
+        "blank_line_notes": "Insert blank lines between major paragraphs, and between each feature (Flashcards, Sentence Prediction, Paragraph Analyzer, Thesaurus, Statistics Dashboard) for clean website formatting."
+      }
+    ]
+  }
+  

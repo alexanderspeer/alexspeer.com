@@ -35,6 +35,16 @@
         <meta name="msapplication-TileColor" content="#000000">
         <meta name="msapplication-TileImage" content="./src/assets/img/ico/ms-icon-144x144.png">
         <meta name="theme-color" content="#000000">
+        
+        <!-- Additional styling for instant black background -->
+        <style>
+            html, body {
+                background-color: #000000 !important;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+        </style>
 
         <!-- Meta Social Sharing  -->
         <!-- Twitter Card data -->
@@ -62,8 +72,23 @@
 
     </head>
 
-    <body>
-
+    <body style="background-color: #000000; margin: 0; padding: 0; overflow: hidden;">
+        <!-- SVG Filter for Liquid Glass Effect -->
+        <svg style="display:none;">
+            <defs>
+                <filter id="liquidGlassFilter">
+                    <feTurbulence type="turbulence" 
+                        baseFrequency="0.01" 
+                        numOctaves="2" 
+                        result="turbulence" />
+                    <feDisplacementMap in="SourceGraphic"
+                        in2="turbulence"
+                        scale="50" 
+                        xChannelSelector="R" 
+                        yChannelSelector="G" />
+                </filter>
+            </defs>
+        </svg>
     </body>
 
 </html>

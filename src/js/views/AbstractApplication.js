@@ -18,15 +18,15 @@ class AbstractApplication {
       1,
       1000
     );
-    this.a_camera.position.z = 1000;
+    this.a_camera.position.z = 30; // Start zoomed INTO the brain
 
     this.a_scene = new THREE.Scene();
-    this.a_scene.background = new THREE.Color("#a7b6d2");
+    this.a_scene.background = new THREE.Color("#000000"); // Black background
 
     this.a_blurScene = new THREE.Scene();
     this.a_bloomScene = new THREE.Scene();
 
-    this.a_scene.fog = new THREE.Fog(0xa7b6d2, 300, 1300);
+    this.a_scene.fog = new THREE.Fog(0x000000, 300, 1300); // Black fog
 
     this.a_renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -37,7 +37,7 @@ class AbstractApplication {
     this.a_renderer.setPixelRatio(window.devicePixelRatio);
     this.a_renderer.setSize(window.innerWidth, window.innerHeight);
     this.a_renderer.sortObjects = false;
-    this.a_renderer.setClearColor(0x00000, 0.0);
+    this.a_renderer.setClearColor(0x000000, 1.0);
 
     this.a_renderer.shadowMap.enabled = true;
     this.a_renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -59,7 +59,7 @@ class AbstractApplication {
     this.bloomPass = new BloomPass({
       resolutionScale: 0.7,
       resolution: 2.9,
-      intensity: 2.3,
+      intensity: 1.8, // Slightly reduced from 2.3 for reasonable glow
       distinction: 9.0,
       blend: true,
     });
@@ -70,9 +70,17 @@ class AbstractApplication {
     this.blurMask = new MaskPass(this.blurScene, this.camera);
     this.renderPass2 = new RenderPass(this.blurScene, this.camera);
 
+    // Set canvas style for seamless black background
+    this.a_renderer.domElement.style.display = 'block';
+    this.a_renderer.domElement.style.position = 'absolute';
+    this.a_renderer.domElement.style.top = '0';
+    this.a_renderer.domElement.style.left = '0';
+
     document.body.appendChild(this.a_renderer.domElement);
 
+    // FPS tracker hidden but functional
     this.stats = AbstractApplication.initStats(document.body);
+    this.stats.domElement.style.display = 'none'; // Hide the FPS counter
 
     this.orbitControls = new THREE.OrbitControls(
       this.camera,
@@ -88,7 +96,8 @@ class AbstractApplication {
     this.orbitControls.autoRotate = false;
     this.orbitControls.autoRotateSpeed = 1.0;
     this.orbitControls.rotateSpeed = 0.1;
-    this.orbitControls.screenSpacePanning = true;
+    this.orbitControls.screenSpacePanning = false; // Disable panning to keep brain centered
+    this.orbitControls.target.set(0, 0, 0); // Center on origin where brain is
 
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
     window.addEventListener("mousemove", this.onMouseMove.bind(this), false);

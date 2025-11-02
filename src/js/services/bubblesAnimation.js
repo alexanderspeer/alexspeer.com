@@ -55,7 +55,35 @@ class BubblesAnimation {
                 parent.add(mesh);
                 mesh.position.set(x, y, z);
 
+                // Add navigation text label for winner if memory labels are enabled
+                if (this.mainBrain.gui && this.mainBrain.gui.controls.showMemoryLabels) {
+                    const navItem = this.mainBrain.navigationItems.find(item => item.key === m.subsystem);
+                    if (navItem) {
+                        const textPosition = new THREE.Vector3(x, y + altitude + 30, z);
+                        this.mainBrain.font.makeClickableTextSprite(
+                            `${navItem.label} ★`,
+                            parent,
+                            textPosition,
+                            2.5,
+                            navItem.url
+                        );
+                    }
+                }
+
                 bubbleList.push(x, y + 150.0, z, 3.0); // w = 3.0 for the winner
+            } else if (this.mainBrain.gui && this.mainBrain.gui.controls.showMemoryLabels) {
+                // Add navigation text label for regular memory bubble if enabled
+                const navItem = this.mainBrain.navigationItems.find(item => item.key === m.subsystem);
+                if (navItem) {
+                    const textPosition = new THREE.Vector3(x, y + altitude + 20, z);
+                    this.mainBrain.font.makeClickableTextSprite(
+                        navItem.label,
+                        parent,
+                        textPosition,
+                        2,
+                        navItem.url
+                    );
+                }
             }
             const group = new THREE.Object3D();
             parent.add(group);
@@ -132,7 +160,7 @@ class BubblesAnimation {
     initAnimation() {
         const { scene, camera, memories } = this.mainBrain;
 
-        const particles = 100000;
+        const particles = 200000; //100000
         const geometry = new THREE.BufferGeometry();
         const sizes = [];
         const positions = [];
@@ -154,7 +182,7 @@ class BubblesAnimation {
             positions.push(x, y, z);
             memory.push(x, y, z, r);
 
-            sizes[i] = THREE.Math.randFloat(10.0, 20.0);
+            sizes[i] = THREE.Math.randFloat(5.0, 10.0); // 10 and 20
             if ((i % 100) === 0) {
                 const altitude = THREE.Math.randInt(100, 250) + y;
                 bubbles.push(x, altitude, z, 1.0);
@@ -178,7 +206,7 @@ class BubblesAnimation {
                     {
                         c: { type: 'f', value: 0.9 }, // Control the dynamically intensity.. Disabled
                         p: { type: 'f', value: 2.8 }, // Control the dynamically intensity.. Disabled
-                        glowColor: { type: 'c', value: new THREE.Color(0x2C3E93) },
+                        glowColor: { type: 'c', value: new THREE.Color(0xffffff) }, // Changed to white
                         viewVector: { type: 'v3', value: camera.position }, // To make intensity dynamically.. Disabled
                         uTime: { type: 'f', value: 0.0 },
                         uSlowTime: { type: 'f', value: 0.0 }, // Slow time to make some particles blinking slowly
@@ -208,10 +236,9 @@ class BubblesAnimation {
 
     updateSubSystem(subsystemPayload) {
         const payload = BubblesAnimation.processSubsystemResponses(subsystemPayload);
-        this.mainBrain.thinkingAnimation.isActive(true);
+        // Thinking animation disabled
+        // this.mainBrain.thinkingAnimation.isActive(true);
         this.bubbles.geometry.attributes.bubbles.needsUpdate = false;
-        const cameraPos = this.mainBrain.camera.position;
-        const { target } = this.mainBrain.orbitControls;
         const bubblesAttr = this.bubbles.geometry.attributes.bubbles.array;
         const progress = { p: 1.0 };
 
@@ -222,6 +249,8 @@ class BubblesAnimation {
             ease: Power1.easeInOut,
             onUpdate: () => {
                 this.updateBurbleUp(progress.p);
+                // Keep camera centered on brain
+                this.mainBrain.orbitControls.target.copy(this.mainBrain.brainCenter);
             },
             onStart: () => {
                 if (this.fistCameraReposition) {
@@ -233,7 +262,7 @@ class BubblesAnimation {
                 this.getBubblesSelected(bubblesAttr, payload);
                 this.bubbles.geometry.attributes.bubbles.needsUpdate = true;
                 this.animate(true);
-                this.mainBrain.thinkingAnimation.isActive(false);
+                // this.mainBrain.thinkingAnimation.isActive(false);
                 this.fistCameraReposition = true;
             },
         });
@@ -271,7 +300,8 @@ class BubblesAnimation {
 
     flashingAnimation(isActive) {
         this.bubbles.material.uniforms.uIsFlashing.value = isActive;
-        this.mainBrain.thinkingAnimation.isActive(false);
+        // Thinking animation disabled
+        // this.mainBrain.thinkingAnimation.isActive(false);
         if (isActive) {
             const progress = { p: 0.0 };
             TweenMax.fromTo(progress, 2.5, { p: 0.0 }, {
@@ -296,36 +326,33 @@ class BubblesAnimation {
     }
 
     animate(isActive) {
-        const cameraPos = this.mainBrain.camera.position;
-        const { target } = this.mainBrain.orbitControls;
+        // Removed camera movement to keep brain centered
         if (!this.isFlashing) {
             this.flashingAnimation(true);
         }
         if (isActive) {
-            const progress = { p: 0.0, camera: 0.0 };
-            TweenMax.fromTo(progress, 2.5, { p: 0.0, camera: 0.0 }, {
+            const progress = { p: 0.0 };
+            TweenMax.fromTo(progress, 2.5, { p: 0.0 }, {
                 p: 1.0,
-                camera: 0.5,
                 ease: Power1.easeInOut,
                 onUpdate: () => {
                     this.updateBurbleUp(progress.p);
-                    this.mainBrain.orbitControls.target.set(target.x, target.y + progress.camera, target.z);
-                    this.mainBrain.camera.position.set(cameraPos.x, cameraPos.y + progress.camera, cameraPos.z);
+                    // Keep camera target centered on brain
+                    this.mainBrain.orbitControls.target.copy(this.mainBrain.brainCenter);
                 },
                 onComplete: () => {
                     this.isWinnerActive(true);
                 },
             });
         } else {
-            const progress = { p: 1.0, camera: 0.5 };
-            TweenMax.fromTo(progress, 2.5, { p: 1.0, camera: 0.5 }, {
+            const progress = { p: 1.0 };
+            TweenMax.fromTo(progress, 2.5, { p: 1.0 }, {
                 p: 0.0,
-                camera: 0.0,
                 ease: Power1.easeInOut,
                 onUpdate: () => {
                     this.updateBurbleUp(progress.p);
-                    this.mainBrain.orbitControls.target.set(target.x, target.y - progress.camera, target.z);
-                    this.mainBrain.camera.position.set(cameraPos.x, cameraPos.y - progress.camera, cameraPos.z);
+                    // Keep camera target centered on brain
+                    this.mainBrain.orbitControls.target.copy(this.mainBrain.brainCenter);
                 },
                 onStart: () => {
                     this.isWinnerActive(false);

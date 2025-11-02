@@ -1,0 +1,12 @@
+{
+    "projects": [
+      {
+        "title": "Alarm Clock",
+        "summary": "I could never make myself wake up on time, so I built a solution that made it impossible to ignore. This custom Arduino-based alarm clock triggers a tea kettle, record player, and strobe lights in a timed, multi-stage automation sequence.",
+        "description": "This system integrates an Arduino Nano with servos, relays, an OLED display, and a DS3231 real-time clock to execute a fully automated wake-up routine. At the programmed alarm time, it sequentially powers the tea kettle, starts the record player, and flashes high-intensity floodlights to ensure the user wakes up.\n\nA rotary encoder provides precise time setting and alarm toggling, while the OLED display shows live clock data and system status.\n\nThe hardware setup features dual servos, two floodlight relays, and a modular pin configuration designed for durability, clear wiring, and easy modification, combining practical automation with a touch of chaos to guarantee a successful morning routine.",
+        "stack": "Arduino · C++ · I2C Communication · Hardware · Embedded Systems · Automation",
+        "blank_line_notes": "Insert blank lines between paragraphs describing the wake-up sequence, the rotary encoder and display, and the hardware configuration for clear visual separation on the website."
+      }
+    ]
+  }
+  

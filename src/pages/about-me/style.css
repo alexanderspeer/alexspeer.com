@@ -1,0 +1,592 @@
+/* Base Styles */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* Home Button - Matches Navigation Bar EXACTLY */
+#home-button-container {
+    position: fixed;
+    top: 20px;
+    right: 50%;
+    margin-right: 360px;
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+#home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 40px;
+    gap: 40px;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: visible;
+    text-decoration: none;
+    outline: none;
+}
+
+#home-button:visited,
+#home-button:active,
+#home-button:focus {
+    text-decoration: none;
+    outline: none;
+}
+
+#home-button span {
+    color: rgba(255, 255, 255, 1.0);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    display: inline-block;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 0.3s ease-out;
+}
+
+#home-button:hover span {
+    transform: scale(1.07);
+}
+
+/* Navigation Bar - EXACT same as MainBrain */
+#brain-navigation-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+#brain-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 40px;
+    gap: 40px;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: visible;
+}
+
+#brain-navigation a {
+    color: rgba(255, 255, 255, 1.0);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    display: inline-block;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 0.3s ease-out;
+}
+
+#brain-navigation a:hover {
+    transform: scale(1.07);
+}
+
+#brain-navigation a.active {
+    color: rgba(255, 255, 255, 1.0);
+}
+
+/* Main Container */
+.about-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 40px 60px 40px;
+}
+
+/* Hero Image */
+.hero-image-container {
+    width: 100%;
+    max-width: 900px; /* Adjust this value to change image size */
+    margin: 0 auto 60px auto;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Introduction Section */
+.intro-section {
+    max-width: 900px;
+    margin: 0 auto 60px auto;
+    padding: 0 20px;
+}
+
+#intro-content p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 28px 0;
+    text-align: left;
+    display: block;
+}
+
+#intro-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Timeline Section */
+.timeline-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.timeline-headers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+    padding: 0 50px;
+}
+
+.timeline-label {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.timeline-label.left {
+    text-align: right;
+    padding-right: 80px;
+}
+
+.timeline-label.right {
+    text-align: left;
+    padding-left: 80px;
+}
+
+/* Timeline Container */
+.timeline {
+    position: relative;
+    padding: 40px 0 60px 0;
+}
+
+/* Timeline Center Line - Brighter Glowing White with Particles */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.3) 0%, 
+        rgba(255, 255, 255, 0.95) 50%, 
+        rgba(255, 255, 255, 0.3) 100%);
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(255, 255, 255, 0.15);
+    filter: blur(0.5px);
+    animation: timeline-glow 8s ease-in-out infinite;
+}
+
+@keyframes timeline-glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                    0 0 20px rgba(255, 255, 255, 0.3),
+                    0 0 30px rgba(255, 255, 255, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.65),
+                    0 0 30px rgba(255, 255, 255, 0.4),
+                    0 0 45px rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Particles emanating from timeline */
+.timeline::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, 
+        rgba(255, 255, 255, 0.08) 0%, 
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 70%);
+    pointer-events: none;
+    animation: particle-drift 10s ease-in-out infinite;
+}
+
+@keyframes particle-drift {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translateX(-50%) scaleX(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translateX(-50%) scaleX(1.2);
+    }
+}
+
+/* Timeline Item */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stagger animation delays */
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.15s; }
+.timeline-item:nth-child(3) { animation-delay: 0.2s; }
+.timeline-item:nth-child(4) { animation-delay: 0.25s; }
+.timeline-item:nth-child(5) { animation-delay: 0.3s; }
+.timeline-item:nth-child(6) { animation-delay: 0.35s; }
+.timeline-item:nth-child(7) { animation-delay: 0.4s; }
+.timeline-item:nth-child(8) { animation-delay: 0.45s; }
+.timeline-item:nth-child(9) { animation-delay: 0.5s; }
+.timeline-item:nth-child(10) { animation-delay: 0.55s; }
+.timeline-item:nth-child(11) { animation-delay: 0.6s; }
+.timeline-item:nth-child(12) { animation-delay: 0.65s; }
+.timeline-item:nth-child(13) { animation-delay: 0.7s; }
+.timeline-item:nth-child(14) { animation-delay: 0.75s; }
+.timeline-item:nth-child(15) { animation-delay: 0.8s; }
+.timeline-item:nth-child(16) { animation-delay: 0.85s; }
+.timeline-item:nth-child(17) { animation-delay: 0.9s; }
+.timeline-item:nth-child(18) { animation-delay: 0.95s; }
+
+/* Left Side - Alexander Speer */
+.timeline-left {
+    flex: 1;
+    text-align: right;
+    padding-right: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.timeline-left .timeline-content {
+    display: inline-block;
+    text-align: right;
+    max-width: 450px;
+}
+
+/* Right Side - Alexander the Great */
+.timeline-right {
+    flex: 1;
+    padding-left: 50px;
+}
+
+.timeline-right .timeline-content {
+    display: inline-block;
+    text-align: left;
+    max-width: 450px;
+}
+
+/* Event Details */
+.timeline-year-age {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+
+.timeline-event {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Center Icon - Glowing Dot */
+.timeline-center {
+    position: relative;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8),
+                0 0 24px rgba(255, 255, 255, 0.5),
+                0 0 36px rgba(255, 255, 255, 0.2),
+                inset 0 0 6px rgba(255, 255, 255, 0.3);
+    animation: dot-glow 8s ease-in-out infinite;
+}
+
+/* Alexander Speer - Blue with white glow */
+.timeline-dot.speer {
+    background: rgba(100, 180, 255, 0.95);
+    border: 2px solid rgba(100, 180, 255, 0.9);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(100, 180, 255, 0.4),
+                inset 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Alexander the Great - Gold with white glow */
+.timeline-dot.great {
+    background: rgba(255, 215, 100, 0.95);
+    border: 2px solid rgba(255, 215, 100, 0.9);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(255, 215, 100, 0.4),
+                inset 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Shared datapoint - Split blue/gold */
+.timeline-dot.shared {
+    background: linear-gradient(90deg, rgba(100, 180, 255, 0.95) 0%, rgba(100, 180, 255, 0.95) 50%, rgba(255, 215, 100, 0.95) 50%, rgba(255, 215, 100, 0.95) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(180, 200, 180, 0.4),
+                inset 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes dot-glow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Particles emanating from dot */
+.timeline-dot::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0.15) 0%, 
+        rgba(255, 255, 255, 0.05) 40%,
+        transparent 70%);
+    pointer-events: none;
+    animation: dot-particle-drift 9s ease-in-out infinite;
+}
+
+@keyframes dot-particle-drift {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.2);
+    }
+}
+
+/* Empty side styling */
+.timeline-left.empty,
+.timeline-right.empty {
+    visibility: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .about-container {
+        padding: 100px 30px 60px 30px;
+    }
+
+    .timeline-section {
+        padding: 60px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        padding: 90px 20px 40px 20px;
+    }
+
+    .intro-section {
+        margin-bottom: 60px;
+        padding: 0 10px;
+    }
+
+    #intro-content p {
+        font-size: 16px;
+    }
+
+    .timeline-headers {
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 10px;
+        margin-bottom: 40px;
+    }
+
+    .timeline-label {
+        text-align: center !important;
+        padding: 0 !important;
+        font-size: 20px;
+    }
+
+    .timeline::before {
+        left: 30px;
+    }
+
+    .timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 60px;
+        margin-bottom: 35px;
+    }
+
+    .timeline-left,
+    .timeline-right {
+        text-align: left;
+        padding: 0;
+        width: 100%;
+    }
+
+    .timeline-left.empty,
+    .timeline-right.empty {
+        display: none;
+    }
+
+    .timeline-content {
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .timeline-center {
+        position: absolute;
+        left: 22px;
+        top: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    #home-button-container {
+        top: 10px;
+        right: auto;
+        left: 10px;
+        margin-right: 0;
+    }
+
+    #home-button {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+    
+    #home-button span {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    #brain-navigation {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+
+    #brain-navigation a {
+        font-size: 11px;
+        letter-spacing: 1px;
+        padding: 6px 12px;
+    }
+
+    .about-container {
+        padding: 80px 16px 30px 16px;
+    }
+
+    .hero-image-container {
+        margin-bottom: 40px;
+        border-radius: 12px;
+    }
+
+    .intro-section {
+        margin-bottom: 50px;
+    }
+
+    #intro-content p {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    .timeline-headers {
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+
+    .timeline-label {
+        font-size: 18px;
+    }
+
+    .timeline-section {
+        padding: 40px 0;
+    }
+
+    .timeline-item {
+        padding-left: 50px;
+    }
+
+    .timeline::before {
+        left: 25px;
+    }
+
+    .timeline-center {
+        left: 17px;
+    }
+}

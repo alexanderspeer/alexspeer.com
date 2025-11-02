@@ -53,7 +53,7 @@ class ThinkingAnimation {
             uniforms: {
                 c: { type: 'f', value: 0.9 },
                 p: { type: 'f', value: 2.8 },
-                glowColor: { type: 'c', value: new THREE.Color(0x2c3e93) },
+                glowColor: { type: 'c', value: new THREE.Color(0xffffff) }, // Changed to white
                 viewVector: { type: 'v3', value: camera.position },
                 uTime: { type: 'f', value: 0.0 },
                 uFadeTime: { type: 'f', value: 0.0 },

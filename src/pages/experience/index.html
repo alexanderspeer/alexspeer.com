@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experience - Alexander Speer</title>
+    <link rel="stylesheet" href="pages/experience/style.css">
+</head>
+<body>
+    <!-- SVG Filter for Liquid Glass Effect -->
+    <svg style="display:none;">
+        <defs>
+            <filter id="liquidGlassFilter">
+                <feTurbulence type="turbulence" 
+                    baseFrequency="0.01" 
+                    numOctaves="2" 
+                    result="turbulence" />
+                <feDisplacementMap in="SourceGraphic"
+                    in2="turbulence"
+                    scale="50" 
+                    xChannelSelector="R" 
+                    yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Home Button -->
+    <div id="home-button-container">
+        <a href="/?skip=true" id="home-button"><span>HOME</span></a>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div id="brain-navigation-container">
+        <nav id="brain-navigation">
+            <a href="/about.html">ABOUT ME</a>
+            <a href="/experience.html" class="active">EXPERIENCE</a>
+            <a href="/projects.html">PROJECTS</a>
+            <a href="/contact.html">CONTACT</a>
+        </nav>
+    </div>
+
+    <!-- Download Sidebar -->
+    <div id="download-sidebar">
+        <div class="download-section-title">Downloads</div>
+        <a href="pages/experience/downloads/Alexander_Speer_Resume.pdf" class="download-link" download>
+            <span class="download-label">Latest Resume</span>
+            <span class="download-subtitle">Download PDF</span>
+        </a>
+        <a href="pages/experience/downloads/Transcript Fall 2025.pdf" class="download-link" download>
+            <span class="download-label">Transcript Fall 2025</span>
+            <span class="download-subtitle">Download PDF</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="experience-container">
+        <div class="section-header">
+            <h1>Work Experience</h1>
+        </div>
+        <div id="work-timeline" class="timeline"></div>
+
+        <div class="section-header">
+            <h1>Education</h1>
+        </div>
+        <div id="education-timeline" class="timeline"></div>
+    </div>
+
+    <script type="module" src="pages/experience/main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,428 @@
+/* Base Styles */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-bottom: 100px; /* Space for fixed bottom navigation */
+}
+
+/* Home Button - Matches Navigation Bar EXACTLY */
+#home-button-container {
+    position: fixed;
+    top: 20px;
+    right: 50%;
+    margin-right: 360px;
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+#home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 40px;
+    gap: 40px;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: visible;
+    text-decoration: none;
+    outline: none;
+}
+
+#home-button:visited,
+#home-button:active,
+#home-button:focus {
+    text-decoration: none;
+    outline: none;
+}
+
+#home-button span {
+    color: rgba(255, 255, 255, 1.0);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    display: inline-block;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 0.3s ease-out;
+}
+
+#home-button:hover span {
+    transform: scale(1.07);
+}
+
+/* Navigation Bar - EXACT same as MainBrain */
+#brain-navigation-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+#brain-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 40px;
+    gap: 40px;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: visible;
+}
+
+#brain-navigation a {
+    color: rgba(255, 255, 255, 1.0);
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    display: inline-block;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 0.3s ease-out;
+}
+
+#brain-navigation a:hover {
+    transform: scale(1.07);
+}
+
+#brain-navigation a.active {
+    color: rgba(255, 255, 255, 1.0);
+}
+
+/* Bottom Navigation Bar - Fixed Position */
+#bottom-navigation-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+#bottom-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 24px;
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: visible;
+}
+
+#bottom-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    position: relative;
+}
+
+#bottom-navigation a:hover {
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* Main Container */
+.page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 120px 40px 60px 40px;
+}
+
+/* Section Header */
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h1 {
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #b8c5cf 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 16px 0;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: rgba(184, 197, 207, 0.8);
+    margin: 0;
+}
+
+/* Content Section */
+.content-section {
+    margin-bottom: 40px;
+}
+
+.glass-card {
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: brightness(0.9) blur(20px);
+    -webkit-backdrop-filter: brightness(0.9) blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 4px 4px 0px -4px rgba(255, 255, 255, 0.3),
+                inset 0 0 8px 1px rgba(255, 255, 255, 0.1),
+                0 8px 32px rgba(0, 0, 0, 0.4);
+    padding: 40px;
+}
+
+.glass-card h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #b8c5cf;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.3px;
+}
+
+.glass-card p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 16px 0;
+}
+
+.glass-card p:last-child {
+    margin-bottom: 0;
+}
+
+/* Contact Information Grid */
+.contact-info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 32px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.info-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.info-icon svg {
+    opacity: 0.9;
+}
+
+.info-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.info-icon:hover svg {
+    opacity: 1;
+}
+
+.info-icon:active {
+    transform: scale(0.98);
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #b8c5cf;
+    margin: 0 0 8px 0;
+}
+
+.info-link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.info-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.info-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+}
+
+.address-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 100px 24px 40px 24px;
+    }
+
+    .section-header h1 {
+        font-size: 36px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .glass-card {
+        padding: 32px 24px;
+    }
+
+    .glass-card h2 {
+        font-size: 28px;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-icon {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 640px) {
+    body {
+        padding-bottom: 90px;
+    }
+
+    #home-button-container {
+        top: 10px;
+        right: auto;
+        left: 10px;
+        margin-right: 0;
+    }
+
+    #home-button {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+    
+    #home-button span {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    #brain-navigation {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+
+    #brain-navigation a {
+        font-size: 11px;
+        letter-spacing: 1px;
+        padding: 6px 12px;
+    }
+
+    #bottom-navigation-container {
+        bottom: 12px;
+    }
+
+    #bottom-navigation {
+        padding: 6px 16px;
+        gap: 12px;
+    }
+
+    #bottom-navigation a {
+        width: 36px;
+        height: 36px;
+    }
+
+    #bottom-navigation a svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .page-container {
+        padding: 90px 16px 30px 16px;
+    }
+
+    .section-header h1 {
+        font-size: 32px;
+    }
+
+    .section-header {
+        margin-bottom: 40px;
+    }
+
+    .glass-card {
+        padding: 24px 20px;
+    }
+
+    .glass-card h2 {
+        font-size: 24px;
+    }
+}

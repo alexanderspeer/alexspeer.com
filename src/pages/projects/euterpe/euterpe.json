@@ -1,0 +1,12 @@
+{
+    "projects": [
+      {
+        "title": "Euterpe",
+        "summary": "Named after the Greek Muse of music, Euterpe is a Spotify-integrated web app for tracking and visualizing listening habits. Built with Flask and Spotipy, it provides dynamic insights into your top tracks, artists, and albums while preserving Spotify’s familiar look and feel. Users can log in with their own accounts to explore evolving patterns in their listening behavior.",
+        "description": "Euterpe is a full-stack music analytics platform that connects to the Spotify API through a Python Flask backend using the Spotipy client. It handles OAuth 2.0 authentication, token refresh, and session management, returning pre-hydrated JSON endpoints consumed by a single-page vanilla JavaScript front end.\n\nWorking with the Spotify API posed unique challenges since it provides limited raw data. This required creative algorithm design to generate meaningful insights. For example, to identify artists that had 'fallen off' or reemerged in a user's listening habits, the app compares current top lists to historical sets, detecting additions and drop-offs over time.\n\nThe data layer dynamically enriches Spotify responses in memory, ranking albums by track frequency, identifying hidden gems based on popularity scores, and calculating seasonal and release-year trends. Users can switch between time ranges (4 weeks, 6 months, 1 year) to visualize changing preferences and discover long-term listening patterns.\n\nThe front end mirrors Spotify’s design system with responsive layouts, hover animations, and asynchronous data fetching. Euterpe was designed for both personal insight and technical experimentation, prioritizing a lightweight, stateless architecture and read-only OAuth scopes for privacy.\n\n**Stack:** Python · Flask · API · OAuth 2.0 · HTML/CSS",
+        "stack": "Python · Flask · API · OAuth 2.0 · HTML/CSS",
+        "blank_line_notes": "Insert blank lines between backend overview, API challenge explanation, data enrichment details, and frontend description for proper spacing and readability on the website."
+      }
+    ]
+  }
+  

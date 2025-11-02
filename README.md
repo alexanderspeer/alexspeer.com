@@ -1,4 +1,4 @@
-Amelia Brain Module 2.0 Experiment Three.js
+Alexander Speer Portfolio - 3D Brain Three.js
 
 [VIEW VIDEO DEMO](https://www.youtube.com/watch?v=y0XOuSNlHx8)
 

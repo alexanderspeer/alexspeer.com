@@ -27,10 +27,38 @@ class Loaders {
     }
     static handlerProgress(url, itemsLoaded, itemsTotal) {
         console.log(`Loading file: ${url}.\nLoaded ${itemsLoaded} of ${itemsTotal} files.`);
+
+        // Update loading screen percentage
+        const percentage = Math.round((itemsLoaded / itemsTotal) * 100);
+        const loadingPercentage = document.getElementById('loading-percentage');
+
+        if (loadingPercentage) {
+            loadingPercentage.textContent = `${percentage}%`;
+        }
     }
     handlerLoad() {
         console.log('loading Complete!');
+
+        // Ensure we show 100% before hiding
+        const loadingPercentage = document.getElementById('loading-percentage');
+
+        if (loadingPercentage) {
+            loadingPercentage.textContent = '100%';
+        }
+
+        // Start the animation immediately to not delay the startup
         this.startAnimation();
+
+        // Hide loading screen independently (doesn't block animation)
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 800); // Match the CSS transition duration
+            }
+        }, 300); // Brief delay to show 100%, then fade out
     }
     static handlerError(url) {
         console.log(`There was an error loading ${url}`);
@@ -88,7 +116,8 @@ class Loaders {
 
     loadFont() {
         const fontLoader = new THREE.FontLoader(this.loadingManager);
-        fontLoader.load('static/fonts/Roboto_Regular.json', (font) => {
+        // Using Helvetica for cleaner, more modern look (closer to SF Pro Display)
+        fontLoader.load('static/fonts/helvetiker_regular.typeface.json', (font) => {
             this.FONT = font;
         });
     }

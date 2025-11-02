@@ -4,7 +4,7 @@
     <head>
 
         <!-- Meta Title  -->
-        <title>Amelia Brain 2.0</title>
+        <title>Alexander Speer</title>
 
         <!-- Meta Content-Type  -->
         <meta charset="utf-8">
@@ -35,6 +35,17 @@
         <meta name="msapplication-TileColor" content="#000000">
         <meta name="msapplication-TileImage" content="./src/assets/img/ico/ms-icon-144x144.png">
         <meta name="theme-color" content="#000000">
+        
+        <!-- Additional styling for instant black background -->
+        <style>
+            html, body {
+                background-color: #000000 !important;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+                overflow-y: scroll;
+            }
+        </style>
 
         <!-- Meta Social Sharing  -->
         <!-- Twitter Card data -->
@@ -62,8 +73,49 @@
 
     </head>
 
-    <body>
+    <body style="background-color: #000000; margin: 0; padding: 0; overflow-x: hidden; overflow-y: scroll;">
+        <!-- Loading Screen -->
+        <div id="loading-screen" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease-out;
+        ">
+            <div style="
+                font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                letter-spacing: 2px;
+                color: rgba(255, 255, 255, 0.8);
+                text-transform: uppercase;
+            ">
+                LOADING <span id="loading-percentage">0%</span>
+            </div>
+        </div>
 
+        <!-- SVG Filter for Liquid Glass Effect -->
+        <svg style="display:none;">
+            <defs>
+                <filter id="liquidGlassFilter">
+                    <feTurbulence type="turbulence" 
+                        baseFrequency="0.01" 
+                        numOctaves="2" 
+                        result="turbulence" />
+                    <feDisplacementMap in="SourceGraphic"
+                        in2="turbulence"
+                        scale="50" 
+                        xChannelSelector="R" 
+                        yChannelSelector="G" />
+                </filter>
+            </defs>
+        </svg>
     </body>
 
 </html>

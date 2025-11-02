@@ -6,6 +6,11 @@ import Chuncks from './chunks';
 import xRayVertex from '../shaders/xRay.vert';
 import xRayFrag from '../shaders/xRay.frag';
 
+// Compatibility patch for three-bas with Three.js r91
+if (!THREE.BufferGeometry.prototype.setAttribute && THREE.BufferGeometry.prototype.addAttribute) {
+    THREE.BufferGeometry.prototype.setAttribute = THREE.BufferGeometry.prototype.addAttribute;
+}
+
 
 class ParticleSystem {
     constructor(mainBrain, brainParticles, memories) {
@@ -223,7 +228,7 @@ class ParticleSystem {
             uniforms: {
                 c: { type: 'f', value: 0.9 },
                 p: { type: 'f', value: 6.7 },
-                glowColor: { type: 'c', value: new THREE.Color(0x84ccff) },
+                glowColor: { type: 'c', value: new THREE.Color(0xffffff) }, // Changed to white
                 viewVector: { type: 'v3', value: new THREE.Vector3(0, 0, 0) },
                 lightningTexture: { type: 't', value: this.mainBrain.loaders.brainXRayLight },
                 offsetY: { type: 'f', value: 0.3 },
@@ -240,10 +245,23 @@ class ParticleSystem {
         const systemPoints = new THREE.Points(geometry, material);
 
         console.error('MEMORIES', this.memories);
-        const xRayGeometry = new THREE.Geometry().fromBufferGeometry(this.mainBrain.endPointsCollections);
-        xRayGeometry.computeFaceNormals();
-        xRayGeometry.mergeVertices();
-        xRayGeometry.computeVertexNormals();
+        // Create geometry compatible with Three.js r91
+        let xRayGeometry;
+        if (THREE.Geometry && this.mainBrain.endPointsCollections) {
+            xRayGeometry = new THREE.Geometry().fromBufferGeometry(this.mainBrain.endPointsCollections);
+        } else {
+            // Fallback for newer Three.js versions or if endPointsCollections is undefined
+            xRayGeometry = this.mainBrain.endPointsCollections || new THREE.BufferGeometry();
+        }
+        if (xRayGeometry.computeFaceNormals) {
+            xRayGeometry.computeFaceNormals();
+        }
+        if (xRayGeometry.mergeVertices) {
+            xRayGeometry.mergeVertices();
+        }
+        if (xRayGeometry.computeVertexNormals) {
+            xRayGeometry.computeVertexNormals();
+        }
 
         const xRayEffect = new THREE.Mesh(xRayGeometry, xRayMaterial);
 
@@ -316,6 +334,7 @@ class ParticleSystem {
                 onComplete: () => {
                     this.mainBrain.orbitControls.maxDistance = 700;
                     this.mainBrain.orbitControls.autoRotate = true;
+                    this.mainBrain.orbitControls.autoRotateSpeed = 0.15; // Reduced rotation speed
                     this.updateTransitioning(1.5);
                 },
             });

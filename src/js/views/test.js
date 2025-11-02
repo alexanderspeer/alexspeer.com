@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 /**
  * Very simple example rendering pure Three.js HUD on top of
  * a 3D scene.
@@ -38,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // And the box.
     const geometry = new THREE.BoxGeometry(20, 20, 20);
-    var material = new THREE.MeshPhongMaterial({ color: 0xcccccc });
-    const cube = new THREE.Mesh(geometry, material);
+    const boxMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
+    const cube = new THREE.Mesh(geometry, boxMaterial);
     scene.add(cube);
 
 
@@ -65,19 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const cameraHUD = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0, 30);
 
     // Create also a custom scene for HUD.
-    sceneHUD = new THREE.Scene();
+    const sceneHUD = new THREE.Scene();
 
     // Create texture from rendered graphics.
     const hudTexture = new THREE.Texture(hudCanvas);
     hudTexture.needsUpdate = true;
 
     // Create HUD material.
-    var material = new THREE.MeshBasicMaterial({ map: hudTexture });
-    material.transparent = true;
+    const hudMaterial = new THREE.MeshBasicMaterial({ map: hudTexture });
+    hudMaterial.transparent = true;
 
     // Create plane to render the HUD. This plane fill the whole screen.
     const planeGeometry = new THREE.PlaneGeometry(width, height);
-    const plane = new THREE.Mesh(planeGeometry, material);
+    const plane = new THREE.Mesh(planeGeometry, hudMaterial);
     sceneHUD.add(plane);
 
 
@@ -90,7 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update HUD graphics.
         hudBitmap.clearRect(0, 0, width, height);
-        hudBitmap.fillText(`RAD [x:${(cube.rotation.x % (2 * Math.PI)).toFixed(1)}, y:${(cube.rotation.y % (2 * Math.PI)).toFixed(1)}, z:${(cube.rotation.z % (2 * Math.PI)).toFixed(1)}]`, width / 2, height / 2);
+        const rotationText = `RAD [x:${(cube.rotation.x % (2 * Math.PI)).toFixed(1)}, ` +
+            `y:${(cube.rotation.y % (2 * Math.PI)).toFixed(1)}, ` +
+            `z:${(cube.rotation.z % (2 * Math.PI)).toFixed(1)}]`;
+        hudBitmap.fillText(rotationText, width / 2, height / 2);
         hudTexture.needsUpdate = true;
 
         // Render scene.
