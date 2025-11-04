@@ -150,7 +150,7 @@ class MainBrain extends AbstractApplication {
     // Apply mobile multiplier to prevent brain from appearing too large on mobile
     const isMobile = window.innerWidth <= 768;
     const mobileMultiplier = isMobile ? 1.8 : 1.0;
-    
+
     const startDistance = 50 * this.viewportScale * mobileMultiplier; // Start position - scaled
     const endDistance = 320 * this.viewportScale * mobileMultiplier; // Final position - scaled (ORIGINAL VALUE)
 
@@ -1113,7 +1113,7 @@ class MainBrain extends AbstractApplication {
     navButton.addEventListener('click', (e) => {
       e.stopPropagation();
       isOpen = !isOpen;
-      
+
       if (isOpen) {
         dropdown.style.display = 'flex';
         // Force reflow then fade in
@@ -1284,18 +1284,19 @@ class MainBrain extends AbstractApplication {
     if (!svgFilter) {
       console.warn('SVG liquidGlassFilter not found, navigation may render incorrectly');
     }
-    
+
     // Create centered liquid glass capsule container at bottom
+    // Position it off-screen below viewport so browser can fully render the filter
     const container = document.createElement('div');
     container.id = 'bottom-navigation-container';
     container.style.cssText = `
       position: fixed;
-      bottom: 20px;
+      bottom: -200px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
-      pointer-events: auto;
-      opacity: 0;
+      pointer-events: none;
+      opacity: 1;
     `;
 
     // Create the liquid glass capsule
@@ -1317,7 +1318,6 @@ class MainBrain extends AbstractApplication {
                   0 8px 32px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: visible;
-      will-change: backdrop-filter;
     `;
 
     // Define social links with their SVG paths and URLs
@@ -1385,42 +1385,71 @@ class MainBrain extends AbstractApplication {
     });
 
     container.appendChild(nav);
-    
-    // Add to DOM hidden first, force browser to compute styles
-    container.style.visibility = 'hidden';
-    container.style.opacity = '1';
+
+    // Add to DOM in its off-screen position (below viewport)
+    // This allows the browser to fully render the filter effect
     document.body.appendChild(container);
-    
-    // Force multiple reflows to ensure backdrop-filter is fully computed
-    void nav.offsetHeight; // Force reflow
-    void nav.getBoundingClientRect(); // Force layout calculation
-    
-    // Give browser additional time to compute the SVG filter
-    setTimeout(() => {
-      void nav.offsetHeight; // Another reflow after timeout
-      
-      // Now make it ready to show (but still invisible)
-      container.style.visibility = 'visible';
-      container.style.opacity = '0';
-    }, 50);
 
     // Store reference for showing later
     this.bottomNavContainer = container;
+    this.bottomNavReady = false;
+
+    // Give browser time to render the filter effect off-screen
+    // Multiple animation frames ensure GPU has processed the backdrop-filter
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            // Mark as ready after sufficient render time
+            this.bottomNavReady = true;
+            console.log('Bottom navigation fully rendered and ready');
+          }, 200);
+        });
+      });
+    });
   }
 
   showBottomNavigation() {
-    if (this.bottomNavContainer) {
-      // Wait for SVG filter to be fully computed and rendered
-      // Use double requestAnimationFrame to ensure filter is ready
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          // Additional small delay to ensure filter is applied
-          setTimeout(() => {
-            this.bottomNavContainer.style.transition = 'opacity 0.5s ease';
-            this.bottomNavContainer.style.opacity = '1';
-          }, 100);
-        });
-      });
+    if (!this.bottomNavContainer) return;
+
+    // Function to fade navigation into view
+    const showNav = () => {
+      // Move to final position and set up for fade in
+      this.bottomNavContainer.style.bottom = '20px';
+      this.bottomNavContainer.style.opacity = '0';
+      this.bottomNavContainer.style.pointerEvents = 'auto';
+      this.bottomNavContainer.style.transition = 'opacity 0.8s ease-out';
+
+      // Fade in after position is set
+      setTimeout(() => {
+        this.bottomNavContainer.style.opacity = '1';
+      }, 10);
+    };
+
+    // Check if the navigation is ready (filter fully rendered)
+    if (this.bottomNavReady) {
+      // Already ready, show immediately
+      showNav();
+    } else {
+      // Not ready yet, wait for it to be ready
+      console.log('Waiting for bottom navigation to be ready...');
+      const checkReady = setInterval(() => {
+        if (this.bottomNavReady) {
+          clearInterval(checkReady);
+          console.log('Bottom navigation ready, showing now');
+          showNav();
+        }
+      }, 50);
+
+      // Failsafe: show after 2 seconds no matter what
+      setTimeout(() => {
+        clearInterval(checkReady);
+        const currentBottom = this.bottomNavContainer.style.bottom;
+        if (currentBottom === '-200px' || currentBottom === '') {
+          console.log('Forcing bottom navigation to show (failsafe)');
+          showNav();
+        }
+      }, 2000);
     }
   }
 
