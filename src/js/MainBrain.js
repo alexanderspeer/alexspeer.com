@@ -528,7 +528,7 @@ class MainBrain extends AbstractApplication {
     setTimeout(() => {
       this.showControlPanel();
       this.showBottomNavigation();
-    }, 300);
+    }, 500);
 
     // Capture default camera position (same as natural animation does)
     this.captureDefaultCameraPosition();
@@ -904,7 +904,7 @@ class MainBrain extends AbstractApplication {
       setTimeout(() => {
         this.showControlPanel();
         this.showBottomNavigation();
-      }, 300);
+      }, 500);
       return;
     }
 
@@ -1053,7 +1053,7 @@ class MainBrain extends AbstractApplication {
       align-items: center;
       justify-content: center;
       padding: 12px 24px;
-      background: rgba(0, 0, 0, 0.1) !important;
+      background: rgba(0, 0, 0, 0.05) !important;
       backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       border-radius: 28px;
@@ -1081,7 +1081,7 @@ class MainBrain extends AbstractApplication {
       transform: translateX(-50%);
       display: none;
       flex-direction: column;
-      background: rgba(0, 0, 0, 0.1) !important;
+      background: rgba(0, 0, 0, 0.05) !important;
       backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       border-radius: 20px;
@@ -1219,7 +1219,7 @@ class MainBrain extends AbstractApplication {
       justify-content: center;
       padding: 12px 40px;
       gap: 40px;
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.05);
       backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
       -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
       border-radius: 28px;
@@ -1279,6 +1279,12 @@ class MainBrain extends AbstractApplication {
   }
 
   createBottomNavigationBar() {
+    // Ensure SVG filter exists and is ready
+    const svgFilter = document.getElementById('liquidGlassFilter');
+    if (!svgFilter) {
+      console.warn('SVG liquidGlassFilter not found, navigation may render incorrectly');
+    }
+    
     // Create centered liquid glass capsule container at bottom
     const container = document.createElement('div');
     container.id = 'bottom-navigation-container';
@@ -1301,7 +1307,7 @@ class MainBrain extends AbstractApplication {
       justify-content: center;
       padding: 8px 24px;
       gap: 20px;
-      background: rgba(0, 0, 0, 0.1) !important;
+      background: rgba(0, 0, 0, 0.05) !important;
       backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       border-radius: 28px;
@@ -1311,6 +1317,7 @@ class MainBrain extends AbstractApplication {
                   0 8px 32px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: visible;
+      will-change: backdrop-filter;
     `;
 
     // Define social links with their SVG paths and URLs
@@ -1384,12 +1391,18 @@ class MainBrain extends AbstractApplication {
     container.style.opacity = '1';
     document.body.appendChild(container);
     
-    // Force browser to compute the backdrop-filter BEFORE showing
+    // Force multiple reflows to ensure backdrop-filter is fully computed
     void nav.offsetHeight; // Force reflow
+    void nav.getBoundingClientRect(); // Force layout calculation
     
-    // Now make it ready to show (but still invisible)
-    container.style.visibility = 'visible';
-    container.style.opacity = '0';
+    // Give browser additional time to compute the SVG filter
+    setTimeout(() => {
+      void nav.offsetHeight; // Another reflow after timeout
+      
+      // Now make it ready to show (but still invisible)
+      container.style.visibility = 'visible';
+      container.style.opacity = '0';
+    }, 50);
 
     // Store reference for showing later
     this.bottomNavContainer = container;
@@ -1397,9 +1410,17 @@ class MainBrain extends AbstractApplication {
 
   showBottomNavigation() {
     if (this.bottomNavContainer) {
-      // Styles are already computed, just fade in smoothly
-      this.bottomNavContainer.style.transition = 'opacity 0.5s ease';
-      this.bottomNavContainer.style.opacity = '1';
+      // Wait for SVG filter to be fully computed and rendered
+      // Use double requestAnimationFrame to ensure filter is ready
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Additional small delay to ensure filter is applied
+          setTimeout(() => {
+            this.bottomNavContainer.style.transition = 'opacity 0.5s ease';
+            this.bottomNavContainer.style.opacity = '1';
+          }, 100);
+        });
+      });
     }
   }
 
@@ -1443,7 +1464,7 @@ class MainBrain extends AbstractApplication {
       transform: translateY(-50%);
       width: 40px;
       height: 180px;
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.05);
       backdrop-filter: brightness(0.9) blur(20px);
       -webkit-backdrop-filter: brightness(0.9) blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1479,7 +1500,7 @@ class MainBrain extends AbstractApplication {
       top: 50%;
       transform: translateY(-50%);
       width: 280px;
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.05);
       backdrop-filter: brightness(0.9) blur(20px);
       -webkit-backdrop-filter: brightness(0.9) blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1584,7 +1605,7 @@ class MainBrain extends AbstractApplication {
     tab.addEventListener('mouseleave', () => {
       if (!this.controlStates.isPanelOpen) {
         tab.style.width = '40px';
-        tab.style.background = 'rgba(0, 0, 0, 0.6)';
+        tab.style.background = 'rgba(0, 0, 0, 0.05)';
       }
     });
 

@@ -215,6 +215,16 @@ body {
     letter-spacing: -0.3px;
 }
 
+.timeline-organization a {
+    color: #b8c5cf;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.timeline-organization a:hover {
+    color: #d4dfe8;
+}
+
 .timeline-location {
     font-size: 13px;
     color: rgba(184, 197, 207, 0.6);

@@ -178,7 +178,7 @@ function setupMobileNavigation() {
     navButton.id = 'mobile-view-tabs-button';
     navButton.style.cssText = `
         padding: 12px 24px;
-        background: rgba(0, 0, 0, 0.1) !important;
+        background: rgba(0, 0, 0, 0.05) !important;
         backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         border-radius: 28px;
@@ -206,7 +206,7 @@ function setupMobileNavigation() {
         transform: translateX(-50%);
         display: none;
         flex-direction: column;
-        background: rgba(0, 0, 0, 0.1) !important;
+        background: rgba(0, 0, 0, 0.05) !important;
         backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         border-radius: 20px;

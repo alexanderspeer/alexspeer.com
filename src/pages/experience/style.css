@@ -26,7 +26,7 @@ body {
     justify-content: center;
     padding: 12px 40px;
     gap: 40px;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.05);
     backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
     -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
     border-radius: 28px;
@@ -86,7 +86,7 @@ body {
     justify-content: center;
     padding: 12px 40px;
     gap: 40px;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.05);
     backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
     -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
     border-radius: 28px;
@@ -442,6 +442,16 @@ body {
     color: #ffffff;
     margin-bottom: 4px;
     letter-spacing: -0.2px;
+}
+
+.timeline-organization a {
+    color: #ffffff;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.timeline-organization a:hover {
+    color: #d4dfe8;
 }
 
 .timeline-location {

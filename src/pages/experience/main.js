@@ -5,6 +5,7 @@ const experienceData = {
         {
             degree: "Bachelor of Arts in Cognitive Science (Specialization in Neural Engineering)",
             institution: "Columbia University",
+            link: "https://www.columbia.edu/",
             location: "New York, NY",
             date_range: "Expected Graduation: May 2026",
             details: [
@@ -27,6 +28,7 @@ const experienceData = {
         {
             title: "Undergraduate Research Assistant",
             organization: "Ultrasound and Elasticity Imaging Laboratory (UEIL)",
+            link: "https://ueil.bme.columbia.edu/",
             location: "Columbia University, New York, NY",
             date_range: "October 2025 – Present",
             details: [
@@ -38,6 +40,7 @@ const experienceData = {
         {
             title: "Head of Events & Experiences",
             organization: "NeuroNYC",
+            link: "https://neuro-nyc.org/",
             location: "New York, NY",
             date_range: "September 2025 – Present",
             details: [
@@ -49,6 +52,7 @@ const experienceData = {
         {
             title: "Brain-Computer Interface Engineer",
             organization: "AWEAR",
+            link: "https://www.awear.us/",
             location: "San Francisco, CA",
             date_range: "June 2025 – Present",
             details: [
@@ -60,6 +64,7 @@ const experienceData = {
         {
             title: "Neural Engineer, Multimodal AI",
             organization: "Sama Therapeutics",
+            link: "https://sama.ac/",
             location: "New York, NY",
             date_range: "June – September 2025",
             details: [
@@ -71,6 +76,7 @@ const experienceData = {
         {
             title: "Human-Computer Interaction Engineer, AI Interfaces",
             organization: "Harvard Medical School & Massachusetts General Hospital",
+            link: "https://hms.harvard.edu/news/artificial-intelligence",
             location: "Remote, NY",
             date_range: "May – September 2025",
             details: [
@@ -82,6 +88,7 @@ const experienceData = {
         {
             title: "Data Scientist",
             organization: "Con Edison",
+            link: "https://www.conedison.com/en/",
             location: "New York, NY",
             date_range: "April – June 2025",
             details: [
@@ -91,6 +98,7 @@ const experienceData = {
         {
             title: "Machine Learning Engineer",
             organization: "Virginia Tile",
+            link: "https://virginiatile.com/",
             location: "Livonia, MI",
             date_range: "May – December 2024",
             details: [
@@ -100,6 +108,7 @@ const experienceData = {
         {
             title: "Neuroscience Teaching Assistant",
             organization: "Columbia University",
+            link: "https://psychology.columbia.edu/content/jon-freeman",
             location: "New York, NY",
             date_range: "October 2023 – May 2024",
             details: [
@@ -109,6 +118,7 @@ const experienceData = {
         {
             title: "Neuroscience Research Intern",
             organization: "Columbia University Neuroscience Summer Lab",
+            link: "https://columbia-sipps.github.io/",
             location: "Remote",
             date_range: "April – August 2023",
             details: [
@@ -197,7 +207,7 @@ function renderEducation(education) {
                 </div>
             </div>
             <div class="timeline-right">
-                <div class="timeline-organization">${edu.institution}</div>
+                <div class="timeline-organization">${edu.link ? `<a href="${edu.link}" target="_blank" rel="noopener noreferrer">${edu.institution}</a>` : edu.institution}</div>
                 ${edu.location ? `<div class="timeline-location">${edu.location}</div>` : ''}
                 ${detailsHTML}
             </div>
@@ -246,7 +256,7 @@ function renderWorkExperience(workExperience) {
                 </div>
             </div>
             <div class="timeline-right">
-                <div class="timeline-organization">${work.organization}</div>
+                <div class="timeline-organization">${work.link ? `<a href="${work.link}" target="_blank" rel="noopener noreferrer">${work.organization}</a>` : work.organization}</div>
                 ${work.location ? `<div class="timeline-location">${work.location}</div>` : ''}
                 ${detailsHTML}
             </div>
@@ -290,7 +300,7 @@ function setupMobileNavigation() {
     navButton.id = 'mobile-view-tabs-button';
     navButton.style.cssText = `
         padding: 12px 24px;
-        background: rgba(0, 0, 0, 0.1) !important;
+        background: rgba(0, 0, 0, 0.05) !important;
         backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         border-radius: 28px;
@@ -318,7 +328,7 @@ function setupMobileNavigation() {
         transform: translateX(-50%);
         display: none;
         flex-direction: column;
-        background: rgba(0, 0, 0, 0.1) !important;
+        background: rgba(0, 0, 0, 0.05) !important;
         backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
         border-radius: 20px;
