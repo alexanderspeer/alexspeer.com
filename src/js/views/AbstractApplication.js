@@ -73,7 +73,7 @@ class AbstractApplication {
     this.bloomPass = new BloomPass({
       resolutionScale: 0.7,
       resolution: 2.9,
-      intensity: 1.8, // Slightly reduced from 2.3 for reasonable glow
+      intensity: 1.0, // Slightly reduced from 2.3 for reasonable glow 1.8
       distinction: 9.0,
       blend: true,
     });
