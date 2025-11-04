@@ -151,15 +151,8 @@ class MainBrain extends AbstractApplication {
     const isMobile = window.innerWidth <= 768;
     const mobileMultiplier = isMobile ? 1.8 : 1.0;
     
-    // Detect MacBook/laptop screens (higher DPI, smaller physical size)
-    // These need extra zoom out because they have high resolution but small screens
-    const isLaptop = window.innerWidth >= 1280 && window.innerWidth <= 1920 && 
-                     window.innerHeight >= 800 && window.innerHeight <= 1200;
-    const laptopMultiplier = isLaptop ? 1.15 : 1.0;
-    
     const startDistance = 50 * this.viewportScale * mobileMultiplier; // Start position - scaled
-    // Increased base endDistance from 320 to 380 for more zoom out on all devices
-    const endDistance = 380 * this.viewportScale * mobileMultiplier * laptopMultiplier; // Final position - scaled with laptop adjustment
+    const endDistance = 320 * this.viewportScale * mobileMultiplier; // Final position - scaled (ORIGINAL VALUE)
 
     const progress = { p: startDistance };
 
@@ -781,6 +774,13 @@ class MainBrain extends AbstractApplication {
     this.htmlLabels = [];
     this.label3DPositions = [];
 
+    // Skip creating floating labels on mobile - they'll only see the VIEW TABS button
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      console.log('Skipping floating tab labels on mobile device');
+      return;
+    }
+
     // Create navigation labels for each memory type with staggered fade-in
     this.navigationItems.forEach((navItem, index) => {
       if (this.memories[navItem.key] && this.memories[navItem.key][0]) {
@@ -896,6 +896,17 @@ class MainBrain extends AbstractApplication {
   transitionToTopNav() {
     // Stop tracking 3D positions and transition to fixed nav bar positions
     this.updateHTMLLabelsFlag = false;
+
+    // On mobile, skip the fancy transition and just show the navigation
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      this.createFinalNavigationBar(); // Creates mobile VIEW TABS button
+      setTimeout(() => {
+        this.showControlPanel();
+        this.showBottomNavigation();
+      }, 300);
+      return;
+    }
 
     if (!this.label3DPositions || this.label3DPositions.length === 0) return;
 
@@ -1042,9 +1053,9 @@ class MainBrain extends AbstractApplication {
       align-items: center;
       justify-content: center;
       padding: 12px 24px;
-      background: rgba(0, 0, 0, 0.1);
-      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
-      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      background: rgba(0, 0, 0, 0.1) !important;
+      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
+      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       border-radius: 28px;
       border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
@@ -1070,9 +1081,9 @@ class MainBrain extends AbstractApplication {
       transform: translateX(-50%);
       display: none;
       flex-direction: column;
-      background: rgba(0, 0, 0, 0.1);
-      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
-      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      background: rgba(0, 0, 0, 0.1) !important;
+      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
+      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
@@ -1279,7 +1290,6 @@ class MainBrain extends AbstractApplication {
       z-index: 1000;
       pointer-events: auto;
       opacity: 0;
-      transition: opacity 0.5s ease;
     `;
 
     // Create the liquid glass capsule
@@ -1291,9 +1301,9 @@ class MainBrain extends AbstractApplication {
       justify-content: center;
       padding: 8px 24px;
       gap: 20px;
-      background: rgba(0, 0, 0, 0.1);
-      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
-      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      background: rgba(0, 0, 0, 0.1) !important;
+      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
+      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter) !important;
       border-radius: 28px;
       border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
@@ -1368,7 +1378,18 @@ class MainBrain extends AbstractApplication {
     });
 
     container.appendChild(nav);
+    
+    // Add to DOM hidden first, force browser to compute styles
+    container.style.visibility = 'hidden';
+    container.style.opacity = '1';
     document.body.appendChild(container);
+    
+    // Force browser to compute the backdrop-filter BEFORE showing
+    void nav.offsetHeight; // Force reflow
+    
+    // Now make it ready to show (but still invisible)
+    container.style.visibility = 'visible';
+    container.style.opacity = '0';
 
     // Store reference for showing later
     this.bottomNavContainer = container;
@@ -1376,6 +1397,8 @@ class MainBrain extends AbstractApplication {
 
   showBottomNavigation() {
     if (this.bottomNavContainer) {
+      // Styles are already computed, just fade in smoothly
+      this.bottomNavContainer.style.transition = 'opacity 0.5s ease';
       this.bottomNavContainer.style.opacity = '1';
     }
   }
