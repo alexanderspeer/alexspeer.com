@@ -156,8 +156,8 @@ class ParticleSystem {
                 // USE_SIZEATTENUATION: false, // Change size of the particle depending of the camera
             },
             uniformValues: {
-                size: 1.9,
-                scale: 400,
+                size: 1.9, //1.9
+                scale: 400, //400
             },
             vertexFunctions: [
                 BAS.ShaderChunk.ease_expo_in_out,
@@ -310,7 +310,7 @@ class ParticleSystem {
 
             // systemPoints.visible = false;
             // system.scale.multiplyScalar(1.05);
-            systemPoints.castShadow = true;
+            systemPoints.castShadow = false;
             systemPoints.frustumCulled = false;
             // systemPoints.visible = false;
 

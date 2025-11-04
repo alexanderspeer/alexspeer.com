@@ -40,20 +40,25 @@ class AbstractApplication {
     this.a_blurScene = new THREE.Scene();
     this.a_bloomScene = new THREE.Scene();
 
-    this.a_scene.fog = new THREE.Fog(0x000000, 300, 1300); // Black fog
+    // this.a_scene.fog = new THREE.Fog(0x000000, 300, 1300); // Black fog
 
     this.a_renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: true, //supposed to be true, trying to save performance
       alpha: true,
       preserveDrawingBuffer: false,
       logarithmicDepthBuffer: true,
     });
-    this.a_renderer.setPixelRatio(window.devicePixelRatio);
+    //this.a_renderer.setPixelRatio(window.devicePixelRatio);
+
+    // this.a_renderer.setPixelRatio(Math.min(window.devicePixelRatio, 0.5));
+
+    this.a_renderer.setPixelRatio(1);
+
     this.a_renderer.setSize(window.innerWidth, window.innerHeight);
     this.a_renderer.sortObjects = false;
     this.a_renderer.setClearColor(0x000000, 1.0);
 
-    this.a_renderer.shadowMap.enabled = true;
+    this.a_renderer.shadowMap.enabled = false;
     this.a_renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.a_renderer.gammaInput = true;
     this.a_renderer.gammaOutput = true;

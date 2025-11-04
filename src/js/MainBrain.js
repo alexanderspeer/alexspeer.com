@@ -74,7 +74,7 @@ class MainBrain extends AbstractApplication {
       transparent: true,
     });
     this.plane = new THREE.Mesh(geometry, material);
-    this.plane.receiveShadow = true;
+    this.plane.receiveShadow = false;
     this.plane.position.y = -160;
     this.plane.rotation.x = -0.5 * Math.PI;
     this.scene.add(this.plane);
@@ -92,7 +92,7 @@ class MainBrain extends AbstractApplication {
       0.0
     );
     this.spotLight.position.set(0, 500, -10);
-    this.spotLight.castShadow = true;
+    this.spotLight.castShadow = false;
 
     this.spotLight.castShadow = true;
     this.spotLight.shadow = new THREE.LightShadow(
