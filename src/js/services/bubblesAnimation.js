@@ -160,7 +160,7 @@ class BubblesAnimation {
     initAnimation() {
         const { scene, camera, memories } = this.mainBrain;
 
-        const particles = 5000; //100000
+        const particles = 2000; //100000
         const geometry = new THREE.BufferGeometry();
         const sizes = [];
         const positions = [];
