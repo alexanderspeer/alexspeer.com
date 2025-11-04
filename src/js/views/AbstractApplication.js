@@ -160,13 +160,21 @@ class AbstractApplication {
       window.innerHeight * window.innerHeight
     );
 
-    // Scale factor: how much smaller/larger is the current screen vs reference
-    // This ensures brain appears the same relative size across all screens
-    this.viewportScale = currentDiagonal / referenceDiagonal;
+    // Calculate raw scale factor
+    const rawScale = currentDiagonal / referenceDiagonal;
+    
+    // Apply a damping function to prevent extreme scaling
+    // Use a power function that reduces the impact of larger screens
+    // This ensures MacBooks and other high-res displays don't zoom in too much
+    // Formula: scale^0.6 reduces the effect (e.g., 1.2^0.6 = 1.117 instead of 1.2)
+    this.viewportScale = Math.pow(rawScale, 0.6);
+    
+    // Cap the scale at reasonable bounds to prevent extreme zoom
+    this.viewportScale = Math.max(0.7, Math.min(this.viewportScale, 1.3));
 
     // Also store a simpler width-based scale for UI elements
     this.uiScale = window.innerWidth / this.referenceWidth;
-    console.log(`Viewport Scale: ${this.viewportScale.toFixed(3)}, UI Scale: ${this.uiScale.toFixed(3)}`);
+    console.log(`Viewport Scale: ${this.viewportScale.toFixed(3)} (raw: ${rawScale.toFixed(3)}), UI Scale: ${this.uiScale.toFixed(3)}`);
   }
 
   static onMouseMove(e) {}

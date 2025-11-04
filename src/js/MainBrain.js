@@ -150,8 +150,16 @@ class MainBrain extends AbstractApplication {
     // Apply mobile multiplier to prevent brain from appearing too large on mobile
     const isMobile = window.innerWidth <= 768;
     const mobileMultiplier = isMobile ? 1.8 : 1.0;
+    
+    // Detect MacBook/laptop screens (higher DPI, smaller physical size)
+    // These need extra zoom out because they have high resolution but small screens
+    const isLaptop = window.innerWidth >= 1280 && window.innerWidth <= 1920 && 
+                     window.innerHeight >= 800 && window.innerHeight <= 1200;
+    const laptopMultiplier = isLaptop ? 1.15 : 1.0;
+    
     const startDistance = 50 * this.viewportScale * mobileMultiplier; // Start position - scaled
-    const endDistance = 320 * this.viewportScale * mobileMultiplier; // Final position - scaled
+    // Increased base endDistance from 320 to 380 for more zoom out on all devices
+    const endDistance = 380 * this.viewportScale * mobileMultiplier * laptopMultiplier; // Final position - scaled with laptop adjustment
 
     const progress = { p: startDistance };
 
@@ -1000,6 +1008,185 @@ class MainBrain extends AbstractApplication {
       return; // Already created, don't duplicate
     }
 
+    // Check if mobile
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      // Mobile navigation: "view tabs" button with dropdown
+      this.createMobileNavigation();
+    } else {
+      // Desktop navigation: original horizontal bar
+      this.createDesktopNavigation();
+    }
+  }
+
+  createMobileNavigation() {
+    // Create container for mobile nav button (same style as bottom bar)
+    const container = document.createElement('div');
+    container.id = 'brain-navigation-container';
+    container.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      pointer-events: auto;
+    `;
+
+    // Create the "view tabs" button (same liquid glass style as bottom bar)
+    const navButton = document.createElement('button');
+    navButton.id = 'mobile-nav-button';
+    navButton.textContent = 'VIEW TABS';
+    navButton.style.cssText = `
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                  inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                  0 8px 32px rgba(0, 0, 0, 0.5);
+      color: rgba(255, 255, 255, 1.0);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: transform 0.2s ease-out;
+      -webkit-tap-highlight-color: transparent;
+    `;
+
+    // Create dropdown menu (hidden by default)
+    const dropdown = document.createElement('div');
+    dropdown.id = 'mobile-nav-dropdown';
+    dropdown.style.cssText = `
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      -webkit-backdrop-filter: brightness(0.9) blur(20px) url(#liquidGlassFilter);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 6px 6px 0px -6px rgba(255, 255, 255, 0.4),
+                  inset 0 0 8px 1px rgba(255, 255, 255, 0.3),
+                  0 8px 32px rgba(0, 0, 0, 0.5);
+      padding: 8px;
+      gap: 8px;
+      z-index: 999;
+      pointer-events: auto;
+      min-width: 150px;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+    `;
+
+    // Add HOME link
+    const homeLink = this.createMobileNavLink('HOME', '/');
+    dropdown.appendChild(homeLink);
+
+    // Add all navigation items
+    this.navigationItems.forEach((navItem) => {
+      const link = this.createMobileNavLink(navItem.label, navItem.url);
+      dropdown.appendChild(link);
+    });
+
+    // Toggle dropdown on button click
+    let isOpen = false;
+    navButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        dropdown.style.display = 'flex';
+        // Force reflow then fade in
+        setTimeout(() => {
+          dropdown.style.opacity = '1';
+        }, 10);
+      } else {
+        dropdown.style.opacity = '0';
+        setTimeout(() => {
+          dropdown.style.display = 'none';
+        }, 300);
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (isOpen && !dropdown.contains(e.target) && e.target !== navButton) {
+        isOpen = false;
+        dropdown.style.opacity = '0';
+        setTimeout(() => {
+          dropdown.style.display = 'none';
+        }, 300);
+      }
+    });
+
+    container.appendChild(navButton);
+    document.body.appendChild(container);
+    document.body.appendChild(dropdown);
+  }
+
+  createMobileNavLink(label, url) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.textContent = label;
+    link.style.cssText = `
+      color: rgba(255, 255, 255, 1.0);
+      text-decoration: none;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      transition: background 0.2s ease-out;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+
+    // Touch feedback
+    link.addEventListener('touchstart', () => {
+      link.style.background = 'rgba(255, 255, 255, 0.15)';
+    });
+
+    link.addEventListener('touchend', () => {
+      link.style.background = 'rgba(255, 255, 255, 0.05)';
+    });
+
+    // Click handler
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Close dropdown
+      const dropdown = document.getElementById('mobile-nav-dropdown');
+      if (dropdown) {
+        dropdown.style.opacity = '0';
+        setTimeout(() => {
+          dropdown.style.display = 'none';
+        }, 300);
+      }
+      this.navigateToPage(url);
+    });
+
+    return link;
+  }
+
+  createDesktopNavigation() {
     // Create centered liquid glass capsule container
     const container = document.createElement('div');
     container.id = 'brain-navigation-container';
