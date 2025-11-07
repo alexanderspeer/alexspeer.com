@@ -52,11 +52,11 @@ class AbstractApplication {
 
     // this.a_renderer.setPixelRatio(Math.min(window.devicePixelRatio, 0.5));
 
-    this.a_renderer.setPixelRatio(1);
+    this.a_renderer.setPixelRatio(1.0);
 
     this.a_renderer.setSize(window.innerWidth, window.innerHeight);
     this.a_renderer.sortObjects = false;
-    this.a_renderer.setClearColor(0x000000, 1.0);
+    this.a_renderer.setClearColor(0x000000, 2.0);
 
     this.a_renderer.shadowMap.enabled = false;
     this.a_renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -78,7 +78,7 @@ class AbstractApplication {
     this.bloomPass = new BloomPass({
       resolutionScale: 0.7,
       resolution: 2.9,
-      intensity: 1.0, // Slightly reduced from 2.3 for reasonable glow 1.8
+      intensity: 1.7, // Slightly reduced from 2.3 for reasonable glow 1.8 HAD AT 1.2
       distinction: 9.0,
       blend: true,
     });
