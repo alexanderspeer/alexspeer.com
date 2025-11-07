@@ -13,8 +13,8 @@ async function loadIntroduction() {
         const introContent = document.getElementById('intro-content');
         paragraphs.forEach((paragraph) => {
             const p = document.createElement('p');
-            // Clean up the paragraph text
-            p.textContent = paragraph.trim().replace(/\n/g, ' ');
+            // Clean up the paragraph text and use innerHTML to allow HTML links
+            p.innerHTML = paragraph.trim().replace(/\n/g, ' ');
             introContent.appendChild(p);
         });
     } catch (error) {

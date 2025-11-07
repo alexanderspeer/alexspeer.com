@@ -1,13 +1,13 @@
-Hello! My name is Alexander Speer, and I am a senior at Columbia University specializing in Neural Engineering. My curiosity about the brain has always been both scientific and personal, shaped by moments that made its mysteries feel very real.
+Hello! My name is Alexander Speer, and I am a senior at Columbia University specializing in Neural Engineering. My interest in the brain is equal parts scientific and personal, grounded in moments that revealed just how real its mysteries can be.
 
-I was in high school when I witnessed my father's first seizure. The root of the word "epilepsy" means "to be seized," and standing at his bedside, I felt seized too—not just by fear, but by a profound need to understand what was happening. Since then, I've tried to orient my life toward engineering solutions to such disorders.
+I was in high school when I witnessed my father's first seizure. The root of the word "epilepsy" means "to be seized," and standing at his bedside, I felt seized too – not just by fear, but by a profound need to understand what was happening. Since then, I've tried to orient my life toward engineering solutions to such disorders.
 
-Currently, I work in Columbia's Ultrasound and Elasticity Imaging Laboratory (UEIL), helping conduct focused ultrasound neuromodulation experiments on murine models to study pain modulation and neural control. I also serve as Head of Events & Experiences at NeuroNYC, where I bring together researchers, founders, and students across New York's neurotechnology community to share ideas and build the future of neurotech together.
+Currently, I work in Columbia's <a href="https://ueil.bme.columbia.edu/" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: underline; text-decoration-thickness: 1px;">Ultrasound and Elasticity Imaging Laboratory (UEIL)</a>, where I study focused ultrasound neuromodulation to understand pain and neural control. I also lead as Head of Events & Experiences at <a href="https://neuro-nyc.org/" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: underline; text-decoration-thickness: 1px;">NeuroNYC</a>, connecting researchers, founders, and students across New York's neurotech scene.
 
-Over the past few years, I've worked across the spectrum of neuroengineering: developing brain-computer interfaces, engineering EEG preprocessing and multimodal pipelines, and implementing platforms for real-time brainwave visualization and seizure detection. I have also prototyped frontend simulators that make these systems accessible to both clinicians and patients alike.
+My work spans brain–computer interface design, neural signal processing, and machine learning, with my long-term goals focused on developing technologies that restore sensory function and alleviate neurological disorders.
+Another passion of mine is ancient history. 
 
-My long-term goals center on advancing brain-computer interfaces that restore sensory function, stabilize neural disorders such as epilepsy, and someday enhance empathy by sharing the neural information underlying memories themselves. 
-
-Another passion of mine is ancient history. Ever since I first read about Alexander the Great, I've had a bit of a one-sided feud with him. He may have claimed the epithet "the Great" a bit prematurely; I'm hoping to earn mine through the slow and careful conquest of neurons, not nations.
+Ever since I first read about Alexander the Great, I've had a bit of a one-sided feud with him. He may have claimed the epithet "the Great" a bit prematurely; I'm hoping to earn mine through the slow and careful conquest of neurons, not nations.
 
 Let’s see how I stack up against my predecessor so far:
+
