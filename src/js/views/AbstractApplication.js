@@ -175,7 +175,8 @@ class AbstractApplication {
     this.viewportScale = Math.pow(rawScale, 0.6);
     
     // Cap the scale at reasonable bounds to prevent extreme zoom
-    this.viewportScale = Math.max(0.7, Math.min(this.viewportScale, 1.3));
+    // Lowered minimum from 0.7 to 0.5 to allow smaller screens (like MacBooks) to scale down properly
+    this.viewportScale = Math.max(0.5, Math.min(this.viewportScale, 1.3));
 
     // Also store a simpler width-based scale for UI elements
     this.uiScale = window.innerWidth / this.referenceWidth;
