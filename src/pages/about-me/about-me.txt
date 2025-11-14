@@ -5,9 +5,8 @@ I was in high school when I witnessed my father's first seizure. The root of the
 Currently, I work in Columbia's <a href="https://ueil.bme.columbia.edu/" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: underline; text-decoration-thickness: 1px;">Ultrasound and Elasticity Imaging Laboratory (UEIL)</a>, where I study focused ultrasound neuromodulation to understand pain and neural control. I also lead as Head of Events & Experiences at <a href="https://neuro-nyc.org/" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: underline; text-decoration-thickness: 1px;">NeuroNYC</a>, connecting researchers, founders, and students across New York's neurotech scene.
 
 My work spans brain–computer interface design, neural signal processing, and machine learning, with my long-term goals focused on developing technologies that restore sensory function and alleviate neurological disorders.
-Another passion of mine is ancient history. 
 
-Ever since I first read about Alexander the Great, I've had a bit of a one-sided feud with him. He may have claimed the epithet "the Great" a bit prematurely; I'm hoping to earn mine through the slow and careful conquest of neurons, not nations.
+Another passion of mine is ancient history. Ever since I first read about Alexander the Great, I've had a bit of a one-sided feud with him. He may have claimed the epithet "the Great" a bit prematurely; I'm hoping to earn mine through the slow and careful conquest of neurons, not nations.
 
 Let’s see how I stack up against my predecessor so far:
 
