@@ -167,16 +167,15 @@ class AbstractApplication {
 
     // Calculate raw scale factor
     const rawScale = currentDiagonal / referenceDiagonal;
-    
+
     // Apply a damping function to prevent extreme scaling
     // Use a power function that reduces the impact of larger screens
     // This ensures MacBooks and other high-res displays don't zoom in too much
     // Formula: scale^0.6 reduces the effect (e.g., 1.2^0.6 = 1.117 instead of 1.2)
-    this.viewportScale = Math.pow(rawScale, 0.6);
-    
+    this.viewportScale = rawScale ** 0.6;
+
     // Cap the scale at reasonable bounds to prevent extreme zoom
-    // Lowered minimum from 0.7 to 0.5 to allow smaller screens (like MacBooks) to scale down properly
-    this.viewportScale = Math.max(0.5, Math.min(this.viewportScale, 1.3));
+    this.viewportScale = Math.max(0.7, Math.min(this.viewportScale, 1.3));
 
     // Also store a simpler width-based scale for UI elements
     this.uiScale = window.innerWidth / this.referenceWidth;

@@ -151,8 +151,23 @@ class MainBrain extends AbstractApplication {
     const isMobile = window.innerWidth <= 768;
     const mobileMultiplier = isMobile ? 1.8 : 1.0;
 
-    const startDistance = 50 * this.viewportScale * mobileMultiplier; // Start position - scaled
-    const endDistance = 320 * this.viewportScale * mobileMultiplier; // Final position - scaled (ORIGINAL VALUE)
+    // Add compensation for smaller screens (like MacBooks) to zoom out more
+    // Calculate current screen diagonal
+    const currentDiagonal = Math.sqrt(
+      window.innerWidth * window.innerWidth +
+      window.innerHeight * window.innerHeight
+    );
+    // Reference diagonal for PC (where brain looks perfect): ~2400 pixels
+    const referenceDiagonal = 2400;
+    // If screen is smaller than reference, add extra distance (max 1.4x for very small screens)
+    const smallScreenCompensation = currentDiagonal < referenceDiagonal
+      ? Math.min(1.4, referenceDiagonal / currentDiagonal)
+      : 1.0;
+
+    console.log(`Screen diagonal: ${currentDiagonal.toFixed(0)}, Small screen compensation: ${smallScreenCompensation.toFixed(3)}`);
+
+    const startDistance = 50 * this.viewportScale * mobileMultiplier * smallScreenCompensation; // Start position - scaled
+    const endDistance = 320 * this.viewportScale * mobileMultiplier * smallScreenCompensation; // Final position - scaled
 
     const progress = { p: startDistance };
 
@@ -485,9 +500,20 @@ class MainBrain extends AbstractApplication {
     // Apply mobile multiplier to prevent brain from appearing too large on mobile
     const isMobile = window.innerWidth <= 768;
     const mobileMultiplier = isMobile ? 1.8 : 1.0;
-    const scaledX = -345.54846209313865 * this.viewportScale * mobileMultiplier;
-    const scaledY = 2.1963802482216168e-14 * this.viewportScale * mobileMultiplier;
-    const scaledZ = 96.22454769567089 * this.viewportScale * mobileMultiplier;
+
+    // Add compensation for smaller screens (like MacBooks) to zoom out more
+    const currentDiagonal = Math.sqrt(
+      window.innerWidth * window.innerWidth +
+      window.innerHeight * window.innerHeight
+    );
+    const referenceDiagonal = 2400; // PC diagonal where brain looks perfect
+    const smallScreenCompensation = currentDiagonal < referenceDiagonal
+      ? Math.min(1.4, referenceDiagonal / currentDiagonal)
+      : 1.0;
+
+    const scaledX = -345.54846209313865 * this.viewportScale * mobileMultiplier * smallScreenCompensation;
+    const scaledY = 2.1963802482216168e-14 * this.viewportScale * mobileMultiplier * smallScreenCompensation;
+    const scaledZ = 96.22454769567089 * this.viewportScale * mobileMultiplier * smallScreenCompensation;
     this.camera.position.set(scaledX, scaledY, scaledZ);
     this.camera.lookAt(this.brainCenter);
     this.orbitControls.target.copy(this.brainCenter);
@@ -1865,7 +1891,18 @@ class MainBrain extends AbstractApplication {
       // Apply mobile multiplier to prevent brain from appearing too large on mobile
       const isMobile = window.innerWidth <= 768;
       const mobileMultiplier = isMobile ? 1.8 : 1.0;
-      const range = 300 * this.viewportScale * mobileMultiplier; // 300 units in each direction - scaled
+
+      // Add compensation for smaller screens
+      const currentDiagonal = Math.sqrt(
+        window.innerWidth * window.innerWidth +
+        window.innerHeight * window.innerHeight
+      );
+      const referenceDiagonal = 2400;
+      const smallScreenCompensation = currentDiagonal < referenceDiagonal
+        ? Math.min(1.4, referenceDiagonal / currentDiagonal)
+        : 1.0;
+
+      const range = 300 * this.viewportScale * mobileMultiplier * smallScreenCompensation; // 300 units in each direction - scaled
       zoomSlider.min = this.defaultCameraDistance - range;
       zoomSlider.max = this.defaultCameraDistance + range;
       zoomSlider.value = this.defaultCameraDistance;
@@ -1879,6 +1916,16 @@ class MainBrain extends AbstractApplication {
     // Apply mobile multiplier to prevent brain from appearing too large on mobile
     const isMobile = window.innerWidth <= 768;
     const mobileMultiplier = isMobile ? 1.8 : 1.0;
+
+    // Add compensation for smaller screens
+    const currentDiagonal = Math.sqrt(
+      window.innerWidth * window.innerWidth +
+      window.innerHeight * window.innerHeight
+    );
+    const referenceDiagonal = 2400;
+    const smallScreenCompensation = currentDiagonal < referenceDiagonal
+      ? Math.min(1.4, referenceDiagonal / currentDiagonal)
+      : 1.0;
 
     // Reset all toggles to off
     if (this.controlStates.thinking && this.thinkingAnimation) {
@@ -1901,7 +1948,7 @@ class MainBrain extends AbstractApplication {
       this.camera.position.copy(this.defaultCameraPosition);
     } else {
       // Fallback if default wasn't captured - scale based on viewport
-      this.camera.position.set(0, 0, 320 * this.viewportScale * mobileMultiplier);
+      this.camera.position.set(0, 0, 320 * this.viewportScale * mobileMultiplier * smallScreenCompensation);
     }
 
     // Reset control states
@@ -1925,7 +1972,7 @@ class MainBrain extends AbstractApplication {
     // Reset zoom slider
     const zoomSlider = document.querySelector('#control-panel input[type="range"]');
     if (zoomSlider) {
-      zoomSlider.value = this.defaultCameraDistance || (320 * this.viewportScale * mobileMultiplier);
+      zoomSlider.value = this.defaultCameraDistance || (320 * this.viewportScale * mobileMultiplier * smallScreenCompensation);
     }
 
     // Ensure camera is looking at brain center and update orbit controls
