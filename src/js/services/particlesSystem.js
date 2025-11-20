@@ -395,7 +395,7 @@ class ParticleSystem {
                     this.updateTransitioning(progress.p);
                 },
                 onComplete: () => {
-                    this.mainBrain.orbitControls.maxDistance = 700;
+                    this.mainBrain.orbitControls.maxDistance = 700 * this.mainBrain.viewportScale;
                     this.mainBrain.orbitControls.autoRotate = true;
                     this.mainBrain.orbitControls.autoRotateSpeed = 0.15; // Reduced rotation speed
                     this.updateTransitioning(1.5);

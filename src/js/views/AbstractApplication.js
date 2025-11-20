@@ -48,11 +48,9 @@ class AbstractApplication {
       preserveDrawingBuffer: false,
       logarithmicDepthBuffer: true,
     });
-    //this.a_renderer.setPixelRatio(window.devicePixelRatio);
-
-    // this.a_renderer.setPixelRatio(Math.min(window.devicePixelRatio, 0.5));
-
-    this.a_renderer.setPixelRatio(1.0);
+    // Use native device pixel ratio for crisp rendering on all displays (Retina, 4K, etc.)
+    // This makes MacBooks and high-DPI displays as sharp as standard Windows displays
+    this.a_renderer.setPixelRatio(window.devicePixelRatio);
 
     this.a_renderer.setSize(window.innerWidth, window.innerHeight);
     this.a_renderer.sortObjects = false;
