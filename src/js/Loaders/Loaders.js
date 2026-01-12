@@ -10,21 +10,21 @@ class Loaders {
         this.models = ['BrainUVs.obj'];
         this.loadingManager = new THREE.LoadingManager();
         this.startAnimation = startAnimation;
-        
+
         // Smooth loading animation properties
         this.currentDisplayPercentage = 0;
         this.targetPercentage = 0;
         this.animationInterval = null;
-        
+
         this.loadingManager.onLoad = this.handlerLoad.bind(this);
         this.loadingManager.onProgress = this.handlerProgress.bind(this);
         this.loadingManager.onError = this.handlerError;
         this.loadingManager.onStart = this.handlerStart.bind(this);
         this.setModel = this.setModel.bind(this);
-        
+
         // Start the smooth loading animation
         this.startLoadingAnimation();
-        
+
         this.loadBrainTextures();
         this.loadOBJs();
         this.loadTextures();
@@ -37,7 +37,7 @@ class Loaders {
         this.currentDisplayPercentage = 0;
         this.targetPercentage = 0;
     }
-    
+
     handlerProgress(url, itemsLoaded, itemsTotal) {
         console.log(`Loading file: ${url}.\nLoaded ${itemsLoaded} of ${itemsTotal} files.`);
 
@@ -45,19 +45,19 @@ class Loaders {
         const percentage = Math.round((itemsLoaded / itemsTotal) * 100);
         this.targetPercentage = percentage;
     }
-    
+
     startLoadingAnimation() {
         // Animate the loading percentage smoothly - catches up quickly to real progress
         this.animationInterval = setInterval(() => {
             const loadingPercentage = document.getElementById('loading-percentage');
-            
+
             if (!loadingPercentage) {
                 return;
             }
-            
+
             // Calculate the difference between current and target
             const diff = this.targetPercentage - this.currentDisplayPercentage;
-            
+
             if (diff > 0) {
                 // Increment based on distance from target - faster when far, slower when close
                 // This shows intermediate values without adding noticeable delay
@@ -69,20 +69,19 @@ class Loaders {
                 } else {
                     increment = 1; // Small increments when close
                 }
-                
+
                 this.currentDisplayPercentage = Math.min(
                     this.currentDisplayPercentage + increment,
                     this.targetPercentage
                 );
                 loadingPercentage.textContent = `${this.currentDisplayPercentage}%`;
-            }
-            // If target is 100 and we've reached it, we can stop
-            else if (this.targetPercentage === 100 && this.currentDisplayPercentage === 100) {
+            } else if (this.targetPercentage === 100 && this.currentDisplayPercentage === 100) {
+                // If target is 100 and we've reached it, we can stop
                 clearInterval(this.animationInterval);
             }
         }, 16); // Update every 16ms (~60fps) for smooth animation
     }
-    
+
     stopLoadingAnimation() {
         if (this.animationInterval) {
             clearInterval(this.animationInterval);
@@ -94,13 +93,13 @@ class Loaders {
 
         // Set target to 100% and wait for animation to catch up (happens fast)
         this.targetPercentage = 100;
-        
+
         // Wait for the display to reach 100% before hiding
         const waitForComplete = () => {
             if (this.currentDisplayPercentage >= 100) {
                 // Stop the animation
                 this.stopLoadingAnimation();
-                
+
                 // Start the brain animation immediately to not delay the startup
                 this.startAnimation();
 
@@ -119,7 +118,7 @@ class Loaders {
                 setTimeout(waitForComplete, 20);
             }
         };
-        
+
         waitForComplete();
     }
     static handlerError(url) {
