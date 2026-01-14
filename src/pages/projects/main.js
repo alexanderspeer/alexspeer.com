@@ -49,6 +49,15 @@ const PROJECTS_CONFIG = [
         order: 7,
         liveLink: 'https://bookshelf-hermes-4f6d58f1165f.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/bookshelf'
+    },
+    {
+        folder: 'blindsight',
+        jsonFile: 'blindsight.json',
+        hasVideo: false,
+        order: 8,
+        liveLink: 'pages/projects/blindsight/report.pdf',
+        githubLink: 'https://github.com/alexanderspeer/blindsight',
+        youtubeLink: 'https://www.youtube.com/watch?v=be8-e_SdzMY'
     }
 ];
 
@@ -82,7 +91,10 @@ const techColors = {
     'Webpack': { bg: 'rgba(140, 180, 220, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'Firebase Hosting': { bg: 'rgba(255, 160, 50, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'React': { bg: 'rgba(97, 218, 251, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
-    'TypeScript': { bg: 'rgba(49, 120, 198, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
+    'TypeScript': { bg: 'rgba(49, 120, 198, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'OpenCV': { bg: 'rgba(5, 139, 255, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'BCI': { bg: 'rgba(160, 100, 200, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'Computational Neuroscience': { bg: 'rgba(200, 80, 120, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
 };
 
 // Default color for unknown tech
@@ -108,6 +120,7 @@ async function loadProjects() {
                     order: config.order,
                     liveLink: config.liveLink,
                     githubLink: config.githubLink,
+                    youtubeLink: config.youtubeLink,
                     stackArray: parseStack(project.stack)
                 };
             }
@@ -151,7 +164,8 @@ function getGalleryImages(folder) {
         'clio': [1, 2, 3, 4],
         'euterpe': [1, 2, 3, 4, 5, 6, 7, 8, 9],
         'facemash': [1, 2, 3],
-        'bookshelf': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+        'bookshelf': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+        'blindsight': [1, 2, 3, 4, 5, 6]
     };
 
     const imageNumbers = galleryImages[folder] || [];
@@ -331,6 +345,15 @@ function renderProjects() {
                 <img src="../../favicons/github.png" alt="GitHub">
                </div>`;
 
+        // Create YouTube link HTML - make it active and vibrant if available
+        const youtubeLinkHtml = project.youtubeLink
+            ? `<a href="${project.youtubeLink}" target="_blank" rel="noopener noreferrer" class="project-link active live-link-active" title="Watch on YouTube">
+                <img src="../../favicons/youtube.png" alt="YouTube">
+               </a>`
+            : `<div class="project-link" title="YouTube (Coming Soon)">
+                <img src="../../favicons/youtube.png" alt="YouTube">
+               </div>`;
+
         card.innerHTML = `
             ${mediaHtml}
             <div class="project-content">
@@ -341,9 +364,7 @@ function renderProjects() {
                 <div class="project-footer">
                     <div class="project-links">
                         ${githubLinkHtml}
-                        <div class="project-link" title="YouTube (Coming Soon)">
-                            <img src="../../favicons/youtube.png" alt="YouTube">
-                        </div>
+                        ${youtubeLinkHtml}
                         ${liveLinkHtml}
                     </div>
                     <div class="project-stack">
@@ -386,8 +407,19 @@ function createMediaHtml(project, galleryImages) {
 
     const { folder, hasVideo, title } = project;
     
-    // Use poster image if available (for projects with hover videos), otherwise use first gallery image
-    const posterImage = hasVideo ? `pages/projects/${folder}/hover/poster.webp` : galleryImages[0];
+    // Use poster image if available (for projects with hover videos), otherwise check for poster.webp in gallery folder, then use first gallery image
+    let posterImage;
+    if (hasVideo) {
+        posterImage = `pages/projects/${folder}/hover/poster.webp`;
+    } else {
+        // For projects without hover videos, check if poster.webp exists in gallery folder (like blindsight)
+        // Otherwise fall back to first gallery image
+        if (folder === 'blindsight') {
+            posterImage = `pages/projects/${folder}/gallery/poster.webp`;
+        } else {
+            posterImage = galleryImages[0];
+        }
+    }
     // Add cache-busting query parameter to force video reload when files are updated
     const videoWebm = `pages/projects/${folder}/hover/${folder}_preview.webm?v=${Date.now()}`;
 
