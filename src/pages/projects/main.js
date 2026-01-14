@@ -6,6 +6,7 @@ const PROJECTS_CONFIG = [
         jsonFile: '3dbrain.json',
         hasVideo: true,
         order: 1,
+        displayPriority: 3, // Personal Website
         liveLink: 'https://alexspeer.com'
     },
     {
@@ -13,19 +14,22 @@ const PROJECTS_CONFIG = [
         jsonFile: 'calliope.json',
         hasVideo: true,
         order: 2,
+        displayPriority: 4, // Calliope (Vocabulary Enhancement Platform)
         liveLink: 'https://calliope-ccdc166d3d1e.herokuapp.com/static/index.html'
     },
     {
         folder: 'clio',
         jsonFile: 'clio.json',
         hasVideo: false,
-        order: 3
+        order: 3,
+        displayPriority: 8 // Clio (lowest)
     },
     {
         folder: 'euterpe',
         jsonFile: 'euterpe.json',
         hasVideo: true,
         order: 4,
+        displayPriority: 6, // Euterpe (Spotify Web App)
         liveLink: 'https://euterpe-c0dcbd4f17ec.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/euterpe'
     },
@@ -33,13 +37,15 @@ const PROJECTS_CONFIG = [
         folder: 'alarm-clock',
         jsonFile: 'alarm-clock.json',
         hasVideo: true,
-        order: 5
+        order: 5,
+        displayPriority: 5 // Alarm Clock
     },
     {
         folder: 'facemash',
         jsonFile: 'columbia-facemash.json',
         hasVideo: false,
         order: 6,
+        displayPriority: 7, // Columbia FaceMash
         liveLink: 'https://columbia-facemash-46dd96c179aa.herokuapp.com/login'
     },
     {
@@ -47,6 +53,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'bookshelf.json',
         hasVideo: true,
         order: 7,
+        displayPriority: 2, // My Personal Bookshelf (That Everyone Can Use)
         liveLink: 'https://bookshelf-hermes-4f6d58f1165f.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/bookshelf'
     },
@@ -55,6 +62,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'blindsight.json',
         hasVideo: false,
         order: 8,
+        displayPriority: 1, // Blindsight: A Synthetic Visual Cortex (highest)
         liveLink: 'pages/projects/blindsight/report.pdf',
         githubLink: 'https://github.com/alexanderspeer/blindsight',
         youtubeLink: 'https://www.youtube.com/watch?v=be8-e_SdzMY'
@@ -118,6 +126,7 @@ async function loadProjects() {
                     folder: config.folder,
                     hasVideo: config.hasVideo,
                     order: config.order,
+                    displayPriority: config.displayPriority,
                     liveLink: config.liveLink,
                     githubLink: config.githubLink,
                     youtubeLink: config.youtubeLink,
@@ -131,7 +140,8 @@ async function loadProjects() {
     });
 
     const results = await Promise.all(promises);
-    projectsData = results.filter(p => p !== null).sort((a, b) => a.order - b.order);
+    // Sort by displayPriority initially (for "All" view), but keep order field for filtered views
+    projectsData = results.filter(p => p !== null).sort((a, b) => a.displayPriority - b.displayPriority);
 
     // Extract all unique tech tags
     projectsData.forEach((project) => {
@@ -292,13 +302,20 @@ function filterProjects() {
     const column2 = document.getElementById('column-2');
     
     // Use stored cards instead of querying DOM
-    const visibleProjects = projectCards.filter(({ project }) => {
+    let visibleProjects = projectCards.filter(({ project }) => {
         // If "All" is selected, show everything
         if (activeFilters.has('all')) {
             return true;
         }
         // Otherwise, show if project has ANY of the selected tech
         return project.stackArray.some(tech => activeFilters.has(tech));
+    });
+    
+    // Always sort by displayPriority (most impressive first)
+    // This ensures higher priority projects appear above lower priority ones
+    // even when filters are applied
+    visibleProjects = visibleProjects.sort((a, b) => {
+        return a.project.displayPriority - b.project.displayPriority;
     });
     
     // Clear columns
