@@ -178,6 +178,23 @@ function getGalleryImages(folder) {
     return images;
 }
 
+// Allowed filter tags
+const ALLOWED_TAGS = new Set([
+    'Python',
+    'JavaScript',
+    'HTML/CSS',
+    'Heroku',
+    'Flask',
+    'SQL',
+    'API',
+    'AI',
+    'Embedded Systems',
+    'C++',
+    'Automation',
+    'TypeScript',
+    'Computational Neuroscience'
+]);
+
 // Render filter bar
 function renderFilterBar() {
     const filterTagsContainer = document.getElementById('filter-tags');
@@ -190,15 +207,17 @@ function renderFilterBar() {
     allTag.addEventListener('click', () => toggleFilter('all'));
     filterTagsContainer.appendChild(allTag);
 
-    // Sort tech tags by frequency (most used first)
+    // Sort tech tags by frequency (most used first), but only show allowed tags
     const techFrequency = {};
     projectsData.forEach(project => {
         project.stackArray.forEach(tech => {
-            techFrequency[tech] = (techFrequency[tech] || 0) + 1;
+            if (ALLOWED_TAGS.has(tech)) {
+                techFrequency[tech] = (techFrequency[tech] || 0) + 1;
+            }
         });
     });
     
-    const sortedTags = Array.from(allTechTags).sort((a, b) => {
+    const sortedTags = Array.from(ALLOWED_TAGS).filter(tech => techFrequency[tech] > 0).sort((a, b) => {
         return techFrequency[b] - techFrequency[a];
     });
     
