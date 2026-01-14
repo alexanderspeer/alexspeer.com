@@ -128,7 +128,7 @@ body {
 /* Download Links Sidebar - Responsive Positioning */
 #download-sidebar {
     position: fixed;
-    left: 40px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 500;
@@ -136,18 +136,20 @@ body {
     flex-direction: column;
     gap: 16px;
     max-width: 240px;
+    /* Ensure sidebar content doesn't overflow viewport */
+    box-sizing: border-box;
 }
 
-/* Adjust position based on screen width */
+/* Adjust position based on screen width - ensures sidebar never goes off-screen */
 @media (min-width: 1600px) {
     #download-sidebar {
-        left: calc((100vw - 1400px) / 2 - 280px);
+        left: max(20px, calc((100vw - 1400px) / 2 - 280px));
     }
 }
 
 @media (max-width: 1599px) and (min-width: 1400px) {
     #download-sidebar {
-        left: 40px;
+        left: max(20px, 40px);
     }
 }
 
