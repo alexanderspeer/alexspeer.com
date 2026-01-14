@@ -25,7 +25,9 @@ const PROJECTS_CONFIG = [
         folder: 'euterpe',
         jsonFile: 'euterpe.json',
         hasVideo: true,
-        order: 4
+        order: 4,
+        liveLink: 'https://euterpe-c0dcbd4f17ec.herokuapp.com/',
+        githubLink: 'https://github.com/alexanderspeer/euterpe'
     },
     {
         folder: 'alarm-clock',
@@ -39,6 +41,14 @@ const PROJECTS_CONFIG = [
         hasVideo: false,
         order: 6,
         liveLink: 'https://columbia-facemash-46dd96c179aa.herokuapp.com/login'
+    },
+    {
+        folder: 'bookshelf',
+        jsonFile: 'bookshelf.json',
+        hasVideo: true,
+        order: 7,
+        liveLink: 'https://bookshelf-hermes-4f6d58f1165f.herokuapp.com/',
+        githubLink: 'https://github.com/alexanderspeer/bookshelf'
     }
 ];
 
@@ -70,7 +80,9 @@ const techColors = {
     'Neuroscience': { bg: 'rgba(180, 60, 110, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'Three.js': { bg: 'rgba(50, 50, 50, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'Webpack': { bg: 'rgba(140, 180, 220, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
-    'Firebase Hosting': { bg: 'rgba(255, 160, 50, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
+    'Firebase Hosting': { bg: 'rgba(255, 160, 50, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'React': { bg: 'rgba(97, 218, 251, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'TypeScript': { bg: 'rgba(49, 120, 198, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
 };
 
 // Default color for unknown tech
@@ -95,6 +107,7 @@ async function loadProjects() {
                     hasVideo: config.hasVideo,
                     order: config.order,
                     liveLink: config.liveLink,
+                    githubLink: config.githubLink,
                     stackArray: parseStack(project.stack)
                 };
             }
@@ -136,8 +149,9 @@ function getGalleryImages(folder) {
         'alarm-clock': [1, 2, 3],
         'calliope': [1, 2, 3, 4, 5, 7, 8, 9, 10], // Note: 6 is missing
         'clio': [1, 2, 3, 4],
-        'euterpe': [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12], // Note: 3 is missing
-        'facemash': [1, 2, 3]
+        'euterpe': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        'facemash': [1, 2, 3],
+        'bookshelf': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
     };
 
     const imageNumbers = galleryImages[folder] || [];
@@ -308,6 +322,15 @@ function renderProjects() {
                 <img src="../../favicons/link.png" alt="Link">
                </div>`;
 
+        // Create GitHub link HTML - make it active and vibrant if available
+        const githubLinkHtml = project.githubLink
+            ? `<a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="project-link active live-link-active" title="Visit GitHub Repository">
+                <img src="../../favicons/github.png" alt="GitHub">
+               </a>`
+            : `<div class="project-link" title="GitHub (Coming Soon)">
+                <img src="../../favicons/github.png" alt="GitHub">
+               </div>`;
+
         card.innerHTML = `
             ${mediaHtml}
             <div class="project-content">
@@ -317,9 +340,7 @@ function renderProjects() {
                 <div class="project-description">${formattedDescription}</div>
                 <div class="project-footer">
                     <div class="project-links">
-                        <div class="project-link" title="GitHub (Coming Soon)">
-                            <img src="../../favicons/github.png" alt="GitHub">
-                        </div>
+                        ${githubLinkHtml}
                         <div class="project-link" title="YouTube (Coming Soon)">
                             <img src="../../favicons/youtube.png" alt="YouTube">
                         </div>
@@ -367,7 +388,8 @@ function createMediaHtml(project, galleryImages) {
     
     // Use poster image if available (for projects with hover videos), otherwise use first gallery image
     const posterImage = hasVideo ? `pages/projects/${folder}/hover/poster.webp` : galleryImages[0];
-    const videoWebm = `pages/projects/${folder}/hover/${folder}_preview.webm`;
+    // Add cache-busting query parameter to force video reload when files are updated
+    const videoWebm = `pages/projects/${folder}/hover/${folder}_preview.webm?v=${Date.now()}`;
 
     let html = `
         <div class="project-media-container" data-folder="${folder}" data-has-video="${hasVideo}">
