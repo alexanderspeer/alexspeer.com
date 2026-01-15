@@ -6,7 +6,7 @@ const PROJECTS_CONFIG = [
         jsonFile: '3dbrain.json',
         hasVideo: true,
         order: 1,
-        displayPriority: 3, // Personal Website
+        displayPriority: 4, // Personal Website
         liveLink: 'https://alexspeer.com'
     },
     {
@@ -14,7 +14,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'calliope.json',
         hasVideo: true,
         order: 2,
-        displayPriority: 4, // Calliope (Vocabulary Enhancement Platform)
+        displayPriority: 5, // Calliope (Vocabulary Enhancement Platform)
         liveLink: 'https://calliope-ccdc166d3d1e.herokuapp.com/static/index.html'
     },
     {
@@ -22,14 +22,14 @@ const PROJECTS_CONFIG = [
         jsonFile: 'clio.json',
         hasVideo: false,
         order: 3,
-        displayPriority: 8 // Clio (lowest)
+        displayPriority: 9 // Clio (lowest)
     },
     {
         folder: 'euterpe',
         jsonFile: 'euterpe.json',
         hasVideo: true,
         order: 4,
-        displayPriority: 6, // Euterpe (Spotify Web App)
+        displayPriority: 7, // Euterpe (Spotify Web App)
         liveLink: 'https://euterpe-c0dcbd4f17ec.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/euterpe'
     },
@@ -38,14 +38,14 @@ const PROJECTS_CONFIG = [
         jsonFile: 'alarm-clock.json',
         hasVideo: true,
         order: 5,
-        displayPriority: 5 // Alarm Clock
+        displayPriority: 6 // Alarm Clock
     },
     {
         folder: 'facemash',
         jsonFile: 'columbia-facemash.json',
         hasVideo: false,
         order: 6,
-        displayPriority: 7, // Columbia FaceMash
+        displayPriority: 8, // Columbia FaceMash
         liveLink: 'https://columbia-facemash-46dd96c179aa.herokuapp.com/login'
     },
     {
@@ -53,7 +53,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'bookshelf.json',
         hasVideo: true,
         order: 7,
-        displayPriority: 2, // My Personal Bookshelf (That Everyone Can Use)
+        displayPriority: 3, // My Personal Bookshelf (That Everyone Can Use)
         liveLink: 'https://bookshelf-hermes-4f6d58f1165f.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/bookshelf'
     },
@@ -66,6 +66,13 @@ const PROJECTS_CONFIG = [
         liveLink: 'pages/projects/blindsight/report.pdf',
         githubLink: 'https://github.com/alexanderspeer/blindsight',
         youtubeLink: 'https://www.youtube.com/watch?v=be8-e_SdzMY'
+    },
+    {
+        folder: 'eeg',
+        jsonFile: 'eeg.json',
+        hasVideo: false,
+        order: 9,
+        displayPriority: 2 // Foundations of EEG and Brain–Computer Interfaces
     }
 ];
 
@@ -102,7 +109,8 @@ const techColors = {
     'TypeScript': { bg: 'rgba(49, 120, 198, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'OpenCV': { bg: 'rgba(5, 139, 255, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
     'BCI': { bg: 'rgba(160, 100, 200, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
-    'Computational Neuroscience': { bg: 'rgba(200, 80, 120, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
+    'Computational Neuroscience': { bg: 'rgba(200, 80, 120, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' },
+    'MATLAB': { bg: 'rgba(237, 177, 32, 0.9)', border: 'transparent', color: 'rgba(255, 255, 255, 1)' }
 };
 
 // Default color for unknown tech
@@ -175,7 +183,8 @@ function getGalleryImages(folder) {
         'euterpe': [1, 2, 3, 4, 5, 6, 7, 8, 9],
         'facemash': [1, 2, 3],
         'bookshelf': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
-        'blindsight': [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        'blindsight': [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        'eeg': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     };
 
     const imageNumbers = galleryImages[folder] || [];
@@ -202,7 +211,8 @@ const ALLOWED_TAGS = new Set([
     'C++',
     'Automation',
     'TypeScript',
-    'Computational Neuroscience'
+    'Computational Neuroscience',
+    'MATLAB'
 ]);
 
 // Render filter bar
@@ -246,6 +256,7 @@ function renderFilterBar() {
         tag.addEventListener('click', () => toggleFilter(tech));
         filterTagsContainer.appendChild(tag);
     });
+    
 }
 
 // Toggle filter
@@ -448,9 +459,9 @@ function createMediaHtml(project, galleryImages) {
     if (hasVideo) {
         posterImage = `pages/projects/${folder}/hover/poster.webp`;
     } else {
-        // For projects without hover videos, check if poster.webp exists in gallery folder (like blindsight)
+        // For projects without hover videos, check if poster.webp exists in gallery folder (like blindsight, eeg)
         // Otherwise fall back to first gallery image
-        if (folder === 'blindsight') {
+        if (folder === 'blindsight' || folder === 'eeg') {
             posterImage = `pages/projects/${folder}/gallery/poster.webp`;
         } else {
             posterImage = galleryImages[0];
@@ -689,11 +700,26 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => navigateModal('prev'));
     nextBtn.addEventListener('click', () => navigateModal('next'));
 
-    // Click outside to close (click on the dark background)
+    // Click outside to close (click on the dark background or empty space)
     modal.addEventListener('click', (e) => {
+        // Get the modal content container
+        const modalContent = modal.querySelector('.gallery-modal-content');
+        
+        // Close if clicking directly on the modal background (dark area)
         if (e.target === modal) {
             closeGalleryModal();
+            return;
         }
+        
+        // Close if clicking on the content container itself (empty padding area)
+        // but not if clicking on any child elements (image, arrows, counter)
+        if (e.target === modalContent) {
+            closeGalleryModal();
+            return;
+        }
+        
+        // Don't close if clicking on image, arrows, counter, or any other child
+        // (let those elements handle their own clicks)
     });
 
     // Keyboard navigation

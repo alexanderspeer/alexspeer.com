@@ -1,0 +1,11 @@
+{
+    "projects": [
+      {
+        "title": "Foundations of EEG and Brain–Computer Interfaces",
+        "summary": "This project is a GitHub repository where I would like to think that I demonstrate a proficiency in many of the core analysis techniques commonly used in brain–computer interface research. It contains EEG recordings that I myself recorded, along with complete preprocessing, feature extraction, and classification pipelines.\n\nThe repository includes artifact detection and filtering, neurofeedback and envelope extraction, event-related potential analysis (N200, P300), auditory and visual evoked responses (ASSR, SSVEP), P300 speller systems, motor imagery classification using CSP and LDA, and closed-loop BCI paradigms.",
+        "description": "This repository contains EEG data and analysis artifacts spanning a range of foundational EEG and BCI techniques. The work is organized by experiment and project, with each directory pairing raw recordings with complete analysis workflows to preserve experimental context and reproducibility.\n\nThe dataset includes raw EEG recordings collected using g.USBamp hardware, alongside MATLAB Live Scripts that document end-to-end signal processing pipelines. These workflows cover artifact detection and filtering, monopolar and bipolar referencing, spectral analysis, and neurofeedback through envelope extraction. Several projects incorporate Simulink models for real-time and closed-loop BCI experiments.\n\nAcross the projects, the repository explores event-related potentials such as N200 and P300, auditory and visual evoked responses including ASSR and SSVEP, and applied BCI systems like P300 spellers. Motor imagery experiments implement full CSP and LDA classification pipelines, from raw EEG through feature extraction and decision-making.\n\nAll data is preserved in its original form, with clear organization intended to demonstrate practical experience in EEG acquisition, signal processing, experimental analysis, and applied brain–computer interface development.",
+        "stack": "MATLAB · Computational Neuroscience",
+        "blank_line_notes": "Double line breaks indicate paragraph separation and should be rendered as vertical spacing between conceptual sections."
+      }
+    ]
+  }
