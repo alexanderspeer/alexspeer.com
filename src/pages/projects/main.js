@@ -72,7 +72,8 @@ const PROJECTS_CONFIG = [
         jsonFile: 'eeg.json',
         hasVideo: false,
         order: 9,
-        displayPriority: 2 // Foundations of EEG and Brain–Computer Interfaces
+        displayPriority: 2, // Foundations of EEG and Brain–Computer Interfaces
+        githubLink: 'https://github.com/alexanderspeer/eeg-bci-signal-analysis'
     }
 ];
 
