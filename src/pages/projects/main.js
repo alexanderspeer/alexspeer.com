@@ -22,7 +22,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'clio.json',
         hasVideo: false,
         order: 3,
-        displayPriority: 9 // Clio (lowest)
+        displayPriority: 9 // Clio
     },
     {
         folder: 'euterpe',
@@ -74,6 +74,15 @@ const PROJECTS_CONFIG = [
         order: 9,
         displayPriority: 2, // Foundations of EEG and Brain–Computer Interfaces
         githubLink: 'https://github.com/alexanderspeer/eeg-bci-signal-analysis'
+    },
+    {
+        folder: 'photography',
+        jsonFile: 'photography.json',
+        hasVideo: false,
+        order: 10,
+        displayPriority: 10, // Photographic Journal (lowest)
+        liveLink: 'https://alexanderspeer.github.io/photography/',
+        githubLink: 'https://github.com/alexanderspeer/photography'
     }
 ];
 
@@ -185,7 +194,8 @@ function getGalleryImages(folder) {
         'facemash': [1, 2, 3],
         'bookshelf': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
         'blindsight': [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        'eeg': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        'eeg': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        'photography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
     };
 
     const imageNumbers = galleryImages[folder] || [];
@@ -460,10 +470,12 @@ function createMediaHtml(project, galleryImages) {
     if (hasVideo) {
         posterImage = `pages/projects/${folder}/hover/poster.webp`;
     } else {
-        // For projects without hover videos, check if poster.webp exists in gallery folder (like blindsight, eeg)
+        // For projects without hover videos, check if poster exists in gallery folder (like blindsight, eeg, photography)
         // Otherwise fall back to first gallery image
         if (folder === 'blindsight' || folder === 'eeg') {
             posterImage = `pages/projects/${folder}/gallery/poster.webp`;
+        } else if (folder === 'photography') {
+            posterImage = `pages/projects/${folder}/gallery/poster.png`;
         } else {
             posterImage = galleryImages[0];
         }

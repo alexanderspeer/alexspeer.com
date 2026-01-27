@@ -1,0 +1,11 @@
+{
+    "projects": [
+      {
+        "title": "Photographic Journal",
+        "summary": "This is just a collection of my favorite photos that I have taken in the past. Shout out to my father for the camera.",
+        "description": "A personal collection of favorite photographs captured over time.",
+        "stack": "",
+        "blank_line_notes": "Double line breaks indicate paragraph separation and should be rendered as vertical spacing between conceptual sections."
+      }
+    ]
+  }
