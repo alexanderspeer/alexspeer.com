@@ -1317,8 +1317,8 @@ class MainBrain extends AbstractApplication {
     // MUSIC ICON SIZE AND SPACING VARIABLES
     // ============================================
     // Adjust these values to change music icon appearance:
-    const MUSIC_ICON_SIZE = '40px';        // Size of the music icon (default: 40px, larger than other icons)
-    const MUSIC_ICON_GAP = '-4px';         // Space between book icon and music icon (default: 24px)
+    const MUSIC_ICON_SIZE = '40px'; // Size of the music icon (default: 40px, larger than other icons)
+    const MUSIC_ICON_GAP = '-4px'; // Space between book icon and music icon (default: 24px)
     // ============================================
 
     // Ensure SVG filter exists and is ready
