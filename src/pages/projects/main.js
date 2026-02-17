@@ -6,7 +6,7 @@ const PROJECTS_CONFIG = [
         jsonFile: '3dbrain.json',
         hasVideo: true,
         order: 1,
-        displayPriority: 4, // Personal Website
+        displayPriority: 5, // Personal Website
         liveLink: 'https://alexspeer.com'
     },
     {
@@ -14,7 +14,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'calliope.json',
         hasVideo: true,
         order: 2,
-        displayPriority: 5, // Calliope (Vocabulary Enhancement Platform)
+        displayPriority: 6, // Calliope (Vocabulary Enhancement Platform)
         liveLink: 'https://calliope-ccdc166d3d1e.herokuapp.com/static/index.html'
     },
     {
@@ -22,14 +22,14 @@ const PROJECTS_CONFIG = [
         jsonFile: 'clio.json',
         hasVideo: false,
         order: 3,
-        displayPriority: 9 // Clio
+        displayPriority: 10 // Clio
     },
     {
         folder: 'euterpe',
         jsonFile: 'euterpe.json',
         hasVideo: true,
         order: 4,
-        displayPriority: 7, // Euterpe (Spotify Web App)
+        displayPriority: 8, // Euterpe (Spotify Web App)
         liveLink: 'https://euterpe-c0dcbd4f17ec.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/euterpe'
     },
@@ -38,14 +38,14 @@ const PROJECTS_CONFIG = [
         jsonFile: 'alarm-clock.json',
         hasVideo: true,
         order: 5,
-        displayPriority: 6 // Alarm Clock
+        displayPriority: 7 // Alarm Clock
     },
     {
         folder: 'facemash',
         jsonFile: 'columbia-facemash.json',
         hasVideo: false,
         order: 6,
-        displayPriority: 8, // Columbia FaceMash
+        displayPriority: 9, // Columbia FaceMash
         liveLink: 'https://columbia-facemash-46dd96c179aa.herokuapp.com/login'
     },
     {
@@ -80,9 +80,18 @@ const PROJECTS_CONFIG = [
         jsonFile: 'photography.json',
         hasVideo: false,
         order: 10,
-        displayPriority: 10, // Photographic Journal (lowest)
+        displayPriority: 11, // Photographic Journal (lowest)
         liveLink: 'https://alexanderspeer.github.io/photography/',
         githubLink: 'https://github.com/alexanderspeer/photography'
+    },
+    {
+        folder: 'buzzer',
+        jsonFile: 'buzzer.json',
+        hasVideo: false,
+        order: 11,
+        displayPriority: 4, // DIY MP3 Player
+        githubLink: 'https://github.com/alexanderspeer/buzzer-mp3',
+        youtubeLink: 'https://www.youtube.com/watch?v=agBdbV-dPpw'
     }
 ];
 
@@ -195,7 +204,8 @@ function getGalleryImages(folder) {
         'bookshelf': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
         'blindsight': [1, 2, 3, 4, 5, 6, 7, 8, 9],
         'eeg': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        'photography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+        'photography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        'buzzer': [1, 2, 3, 4]
     };
 
     const imageNumbers = galleryImages[folder] || [];
@@ -472,7 +482,7 @@ function createMediaHtml(project, galleryImages) {
     } else {
         // For projects without hover videos, check if poster exists in gallery folder (like blindsight, eeg, photography)
         // Otherwise fall back to first gallery image
-        if (folder === 'blindsight' || folder === 'eeg') {
+        if (folder === 'blindsight' || folder === 'eeg' || folder === 'buzzer') {
             posterImage = `pages/projects/${folder}/gallery/poster.webp`;
         } else if (folder === 'photography') {
             posterImage = `pages/projects/${folder}/gallery/poster.png`;
