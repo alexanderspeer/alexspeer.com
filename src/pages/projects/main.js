@@ -53,7 +53,7 @@ const PROJECTS_CONFIG = [
         jsonFile: 'bookshelf.json',
         hasVideo: true,
         order: 7,
-        displayPriority: 3, // My Personal Bookshelf (That Everyone Can Use)
+        displayPriority: 4, // My Personal Bookshelf (That Everyone Can Use)
         liveLink: 'https://bookshelf-hermes-4f6d58f1165f.herokuapp.com/',
         githubLink: 'https://github.com/alexanderspeer/bookshelf'
     },
@@ -92,6 +92,14 @@ const PROJECTS_CONFIG = [
         displayPriority: 4, // DIY MP3 Player
         githubLink: 'https://github.com/alexanderspeer/buzzer-mp3',
         youtubeLink: 'https://www.youtube.com/watch?v=agBdbV-dPpw'
+    },
+    {
+        folder: 'compneuro',
+        jsonFile: 'compneuro.json',
+        hasVideo: false,
+        order: 12,
+        displayPriority: 3, // Foundations of Computational Neuroscience Modeling
+        githubLink: 'https://github.com/alexanderspeer/computational-neuroscience'
     }
 ];
 
@@ -205,7 +213,8 @@ function getGalleryImages(folder) {
         'blindsight': [1, 2, 3, 4, 5, 6, 7, 8, 9],
         'eeg': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         'photography': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
-        'buzzer': [1, 2, 3, 4]
+        'buzzer': [1, 2, 3, 4],
+        'compneuro': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
     };
 
     const imageNumbers = galleryImages[folder] || [];
