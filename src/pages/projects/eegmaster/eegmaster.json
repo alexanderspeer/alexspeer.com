@@ -1,0 +1,11 @@
+{
+  "projects": [
+    {
+      "title": "EEG Pattern Recognition Trainer",
+      "summary": "This project is a browser-based EEG pattern recognition trainer that was designed to help learners develop visual fluency with common EEG rhythms and waveform morphologies through repeated active classification. The system generates short synthetic EEG segments (6 seconds at 256 Hz) and then asks users to identify both the dominant background frequency band (delta, theta, alpha, beta, gamma) and whether a clinically relevant waveform pattern is present.",
+      "description": "Rather than relying on prerecorded patient data, the platform uses a custom signal synthesis engine to construct realistic traces from band-limited sinusoidal components combined with 1/f-style noise and event-specific morphology models. Events such as spike-and-wave activity, sleep spindles, K-complexes, triphasic waves, burst suppression, and seizure-like evolving discharges are generated using structured waveform envelopes and timing rules that reflect their clinical descriptions.\n\nThe application runs as a 10-round interactive training session with a structured game loop and immediate feedback after each classification. A companion reference module provides example traces and visual recognition cues, enabling users to reinforce morphology-based reasoning rather than memorize labels.\n\nTechnically, the system integrates browser-native signal rendering using the HTML canvas API, real-time sweep-style plotting, procedural biomedical waveform synthesis, and a modular JavaScript architecture separating signal generation, gameplay logic, and educational reference content. The result is a lightweight training tool that bridges textbook EEG concepts and early-stage interpretation practice without requiring installation, protected datasets, or specialized software.",
+      "stack": "Python · JavaScript · HTML/CSS",
+      "blank_line_notes": "Insert blank lines between each paragraph exactly where they appear in the description above to preserve original spacing."
+    }
+  ]
+}
