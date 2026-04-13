@@ -107,7 +107,8 @@ const PROJECTS_CONFIG = [
         hasVideo: false,
         order: 13,
         displayPriority: 6, // EEG Pattern Recognition Trainer
-        githubLink: 'https://alexanderspeer.github.io/eeg-master/'
+        liveLink: 'https://alexanderspeer.github.io/eeg-master/',
+        githubLink: 'https://github.com/alexanderspeer?tab=repositories'
     }
 ];
 
