@@ -8,7 +8,6 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    jest: true,
   },
   plugins: ["react", "jsx-a11y"],
   extends: ["airbnb"],

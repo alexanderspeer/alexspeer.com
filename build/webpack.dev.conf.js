@@ -114,16 +114,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         from: path.resolve(__dirname, '../favicons'),
         to: 'favicons',
         ignore: ['.*']
-      },
-      {
-        from: path.resolve(__dirname, '../public/css'),
-        to: 'css',
-        ignore: ['.*']
-      },
-      {
-        from: path.resolve(__dirname, '../public/js'),
-        to: 'js',
-        ignore: ['.*']
       }
     ])
   ]
